@@ -3,6 +3,21 @@
 #include "BattleTanks.h"
 #include "../Public/TankAIController.h"
 
+// Called every frame
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (GetPlayerTank())
+	{
+		// TODO move towards the player
+
+		// Aim towards the player
+		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+
+		// TODO Fire if ready
+	}
+}
+
 // returns ai controlled tank
 ATank* ATankAIController::GetControlledTank() const
 {
@@ -26,5 +41,5 @@ void ATankAIController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("AIController is not able to find player."));
 	}
-	else UE_LOG(LogTemp, Warning, TEXT("AIController is targeting: %s"), *PlayerTank->GetName());
+	//else UE_LOG(LogTemp, Warning, TEXT("AIController is targeting: %s"), *PlayerTank->GetName());
 }
