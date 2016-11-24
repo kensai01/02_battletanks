@@ -27,6 +27,4 @@ void ATankAIController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("AIController is not able to find player."));
 	}
 	else UE_LOG(LogTemp, Warning, TEXT("AIController is targeting: %s"), *PlayerTank->GetName());
-
-	UE_LOG(LogTemp, Warning, TEXT("AIController Begin Play"));
 }
