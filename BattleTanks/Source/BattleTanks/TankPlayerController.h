@@ -18,6 +18,19 @@ public:
 
 	ATank* GetControlledTank() const; 
 
-	void BeginPlay() override;
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+	// Called every frame
+	virtual void Tick(float DeltaSeconds) override;
 	
+private:
+
+	/*Start the tank moving the barrel so that a 
+	shot would hit where the crosshair intersects the world*/
+	void AimTowardsCrosshair();
+
+	/*Look through the chrosshair via linetrace and determine hit location*/
+	/*Return an OUT paramater, true if hit langugage*/
+	bool GetSightRayHitLocation(FVector & HitLocation) const;
 };
