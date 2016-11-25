@@ -21,6 +21,6 @@ void UTankTurret::Rotate(float RelativeSpeed)
 
 	//Given a max elevation speed and frame time
 	auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f: Barrel-Elevate() called at speed %f"), Time, RelativeSpeed);
+	//UE_LOG(LogTemp, Warning, TEXT("%f: Barrel-Elevate() called at speed %f"), Time, RelativeSpeed);
 }
 
