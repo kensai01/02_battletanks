@@ -8,17 +8,23 @@
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (GetPlayerTank())
+
+	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	auto ControlledTank = Cast<ATank>(GetPawn());
+	if (PlayerTank)
 	{
 		// TODO move towards the player
 
 		// Aim towards the player
-		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+		ControlledTank->AimAt(PlayerTank->GetActorLocation());
 
-		// TODO Fire if ready
+		// Fire towrads the player
+		ControlledTank->Fire(); // TODO limit firing rate
 	}
 }
 
+///Code below was in-lined into the Tick method
+/*
 // returns ai controlled tank
 ATank* ATankAIController::GetControlledTank() const
 {
@@ -31,16 +37,9 @@ ATank* ATankAIController::GetPlayerTank() const
 	if (!PlayerPawn) { return nullptr; }
 	return Cast<ATank>(PlayerPawn);
 }
+*/
 
 void ATankAIController::BeginPlay()
 {
-	Super::BeginPlay(); //call the default behaviour before anything else
-
-	auto PlayerTank = GetPlayerTank();
-	//protecting the pointer
-	if (!PlayerTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AIController is not able to find player."));
-	}
-	//else UE_LOG(LogTemp, Warning, TEXT("AIController is targeting: %s"), *PlayerTank->GetName());
+	Super::BeginPlay();
 }
