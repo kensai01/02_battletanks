@@ -23,6 +23,8 @@ private:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
+	// How close the AI can get
+	float AcceptanceRadius = 3000;
 	///Inlined into the Tick method
 	//ATank* GetControlledTank() const;
 	//ATank* GetPlayerTank() const;
