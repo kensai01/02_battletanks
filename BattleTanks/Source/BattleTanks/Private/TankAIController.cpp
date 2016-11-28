@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Mirza Besic 2016
 
 #include "BattleTanks.h"
 #include "../Public/Tank.h"
@@ -11,7 +11,8 @@ void ATankAIController::Tick(float DeltaTime)
 
 	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	auto ControlledTank = Cast<ATank>(GetPawn());
-	if (PlayerTank)
+
+	if (ensure(PlayerTank))
 	{
 		// Move towards the player
 		MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
