@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Mirza Besic 2016
 
 #pragma once
 
@@ -8,6 +8,7 @@
 
 // forward declaration
 class ATank;
+class UTankAimingComponent;
 
 /**
  * 
@@ -16,9 +17,14 @@ UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	ATank* GetControlledTank() const;
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
 
 public:
 	// Called when the game starts or when spawned
@@ -27,6 +33,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 	
+
 private:
 
 	/* Start the tank moving the barrel so that a 
