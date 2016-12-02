@@ -4,6 +4,11 @@
 #include "../Public/TankAIController.h"
 #include "../Public/TankAimingComponent.h"
 
+void ATankAIController::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
 // Called every frame
 void ATankAIController::Tick(float DeltaTime)
 {
@@ -16,32 +21,19 @@ void ATankAIController::Tick(float DeltaTime)
 	
 	// Move towards the player
 	MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
+
 	// Aim towards the player
 	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 	AimingComponent->AimAt(PlayerTank->GetActorLocation());
 
-	// Fire towrads the player
-	AimingComponent->Fire(); // limit firing rate
-	
+	// If aim & locked Fire towrads the player
+
+	if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
+	{
+		AimingComponent->Fire(); // TODO limit firing rate
+	}
+
 }
 
-///Code below was in-lined into the Tick method
-/*
-// returns ai controlled tank
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-// returns player controlled tank 
-ATank* ATankAIController::GetPlayerTank() const
-{
-	auto PlayerPawn = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	if (!PlayerPawn) { return nullptr; }
-	return Cast<ATank>(PlayerPawn);
-}
-*/
 
-void ATankAIController::BeginPlay()
-{
-	Super::BeginPlay();
-}
+
