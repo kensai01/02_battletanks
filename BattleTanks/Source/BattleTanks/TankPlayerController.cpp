@@ -8,13 +8,14 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay(); //call the default behaviour before anything else
 
+	if (!GetPawn()) { return; } // e. g. if not possessing
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+
 	if (!ensure(AimingComponent)) { return; }
 	FoundAimingComponent(AimingComponent);
 	
 	auto ControlledTank = GetPawn();
-	//protecting the pointer
-	if (!ensure(ControlledTank)) 
+	if (!ensure(ControlledTank)) 	//protecting the pointer
 	{
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController not posessing a tank!"));
 	}
@@ -34,7 +35,10 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if (!ensure(AimingComponent)) { return; }
 
 	FVector HitLocation; // Out paramater
-	if (GetSightRayHitLocation(HitLocation))
+	bool bGothitLocation = GetSightRayHitLocation(HitLocation);
+	UE_LOG(LogTemp, Warning, TEXT("bGotHitLocation: %i"), bGothitLocation)
+
+	if (bGothitLocation)
 	{
 		// TODO Tell controlled tank to aim at this point
 		AimingComponent->AimAt(HitLocation);
@@ -56,10 +60,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector & HitLocation) const
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		// Line-trace along that direction (look direction)
-		GetLookVectorHitLocation(LookDirection, HitLocation);
+		return GetLookVectorHitLocation(LookDirection, HitLocation);
 	}
 	// See what we hit after (up to max range)
-	return true;
+	return false;
 }
 
 // De-project the screen position of the crosshair to a world direction 

@@ -13,6 +13,11 @@ class BATTLETANKS_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 
+protected:
+	// How close the AI can get
+	UPROPERTY(EditDefaultsOnly, Category = "Setup") 
+	float AcceptanceRadius = 8000;
+
 private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -20,8 +25,6 @@ private:
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
-	// How close the AI can get
-	float AcceptanceRadius = 3000;
 	///Inlined into the Tick method
 	//ATank* GetControlledTank() const;
 	//ATank* GetPlayerTank() const;
