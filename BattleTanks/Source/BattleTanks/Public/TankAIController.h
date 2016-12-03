@@ -22,10 +22,11 @@ private:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void SetPawn(APawn* InPawn) override;
+
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
 
-	///Inlined into the Tick method
-	//ATank* GetControlledTank() const;
-	//ATank* GetPlayerTank() const;
+	UFUNCTION()
+	void OnPossessedTankDeath();
 };
