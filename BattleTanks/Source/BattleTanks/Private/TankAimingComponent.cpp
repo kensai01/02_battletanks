@@ -109,7 +109,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 		HitLocation,
 		LaunchSpeed,
 		false,
-		0, //sets radius of possible hit area, this way it's not 100% precise
+		1000, //sets radius of possible hit area, this way it's not 100% precise
 		0, //gravity override
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
