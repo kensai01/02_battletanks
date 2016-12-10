@@ -8,10 +8,25 @@
 /**
  * 
  */
+
+ // Enum for AI perception state
+UENUM()
+enum class EPerceptionStatus : uint8
+{
+	Patrolling, Seeking
+};
+
 UCLASS()
 class BATTLETANKS_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "State")
+	EPerceptionStatus GetPerceptionStatus() const;
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus);
 
 protected:
 	// How close the AI can get
@@ -29,4 +44,8 @@ private:
 
 	UFUNCTION()
 	void OnPossessedTankDeath();
+
+	//set the default value to patrolling
+	UPROPERTY(VisibleAnywhere, Category = "State")
+	EPerceptionStatus PerceptionStatus = EPerceptionStatus::Patrolling;
 };

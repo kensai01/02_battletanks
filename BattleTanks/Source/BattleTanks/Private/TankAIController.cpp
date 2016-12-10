@@ -5,6 +5,16 @@
 #include "../Public/TankAimingComponent.h"
 #include "../Public/Tank.h" // So we can implement OnDeath
 
+void ATankAIController::SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus)
+{
+	PerceptionStatus = NextPerceptionStatus;
+}
+
+EPerceptionStatus ATankAIController::GetPerceptionStatus() const
+{
+	return PerceptionStatus;
+}
+
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -39,17 +49,22 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (!ensure(PlayerTank && ControlledTank)) { return; }
 	
-	// Move towards the player
-	//MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
+	if (PerceptionStatus == EPerceptionStatus::Seeking) {
+		
+		UE_LOG(LogTemp, Warning, TEXT("Found Enemy, SEARCH AND DESTROY!"))
 
-	// Aim towards the player
-	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
-	AimingComponent->AimAt(PlayerTank->GetActorLocation());
+		// Move towards the player
+		MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
 
-	// If aim & locked Fire towrads the player
-	if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
-	{
-		AimingComponent->Fire(); // TODO limit firing rate
+		// Aim towards the player
+		auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+		AimingComponent->AimAt(PlayerTank->GetActorLocation());
+
+		// If aim & locked Fire towrads the player
+		if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
+		{
+			AimingComponent->Fire(); // TODO limit firing rate
+		}
 	}
 
 }
