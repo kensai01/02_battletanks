@@ -40,14 +40,13 @@ void ATankAIController::Tick(float DeltaTime)
 	if (!ensure(PlayerTank && ControlledTank)) { return; }
 	
 	// Move towards the player
-	MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
+	//MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
 
 	// Aim towards the player
 	auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
 	AimingComponent->AimAt(PlayerTank->GetActorLocation());
 
 	// If aim & locked Fire towrads the player
-
 	if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
 	{
 		AimingComponent->Fire(); // TODO limit firing rate

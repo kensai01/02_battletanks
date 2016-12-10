@@ -1,0 +1,42 @@
+// Copyright MB
+
+#include "../BattleTanks.h"
+#include "Public/ChooseNextWaypoint.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "PatrolRoute.h"
+#include "AIController.h"
+
+
+EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
+{
+
+
+
+	// Get the patrol points
+	auto AIController = OwnerComp.GetAIOwner();
+	auto ControlledPawn = AIController->GetPawn();
+	auto PatrolRoute = ControlledPawn->FindComponentByClass<UPatrolRoute>();
+
+
+	// protect against no patrol route component
+	if (!ensure(PatrolRoute)) { return EBTNodeResult::Failed; }
+
+	// warn against empty patrol routes
+	auto PatrolPoints = PatrolRoute->GetPatrolPoints();
+	if (PatrolPoints.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Sentry is missing patrol points!"))
+		return EBTNodeResult::Failed;
+	}
+
+	// Set the next waypoint
+	auto BlackboardComp = OwnerComp.GetBlackboardComponent();
+	auto Index = BlackboardComp->GetValueAsInt(IndexKey.SelectedKeyName);
+	BlackboardComp->SetValueAsObject(WaypointKey.SelectedKeyName, PatrolPoints[Index]);
+
+	// Cycle to next index
+	auto NextIndex = (Index + 1) % PatrolPoints.Num();
+	BlackboardComp->SetValueAsInt(IndexKey.SelectedKeyName, NextIndex);
+
+	return EBTNodeResult::Succeeded;
+}

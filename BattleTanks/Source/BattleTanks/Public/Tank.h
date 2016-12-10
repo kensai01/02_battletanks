@@ -22,12 +22,12 @@ public:
 
 	FTankDelegate OnDeath;
 
-private:
 	virtual void BeginPlay() override;
 
 	// Sets default values for this pawn's properties
 	ATank();
 
+private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	int32 StartingHealth = 100;
 
