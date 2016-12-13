@@ -33,6 +33,9 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 	int32 DamageToApply = FMath::Clamp(DamagePoints, 0, CurrentHealth);
 
 	CurrentHealth -= DamageToApply;
+
+	UGameplayStatics::SpawnSoundAttached(SoundTakeHit, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
+
 	if (CurrentHealth <= 0)
 	{
 		OnDeath.Broadcast();
@@ -58,3 +61,28 @@ void ATank::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimePro
 	DOREPLIFETIME(ATank, LastTakeHitInfo);
 	*/
 }
+
+float ATank::GetLastNoiseLoudness()
+{
+	return LastNoiseLoudness;
+}
+
+
+float ATank::GetLastMakeNoiseTime()
+{
+	return LastMakeNoiseTime;
+}
+
+void ATank::MakePawnNoise(float Loudness)
+{
+	if (Role == ROLE_Authority)
+	{
+		/* Make noise to be picked up by PawnSensingComponent by the enemy pawns */
+		MakeNoise(Loudness, this, GetActorLocation());
+	}
+
+	LastNoiseLoudness = Loudness;
+	LastMakeNoiseTime = GetWorld()->GetTimeSeconds();
+}
+
+

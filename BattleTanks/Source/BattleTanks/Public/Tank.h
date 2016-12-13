@@ -17,8 +17,15 @@ class BATTLETANKS_API ATank : public APawn
 	UPawnNoiseEmitterComponent* NoiseEmitterComp;
 
 public:
-	// Called by engine when actor damage is dealt
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	float GetLastNoiseLoudness();
+
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	float GetLastMakeNoiseTime();
+
+	/* MakeNoise hook to trigger AI noise emitting (Loudness between 0.0-1.0)  */
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void MakePawnNoise(float Loudness);
 
 	// Returns current health as a pct of starting health, between 0 and 1
 	UFUNCTION(BluePrintPure, Category = "Health")
@@ -27,12 +34,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PlayerCondition")
 	bool IsAlive() const;
 
-	FTankDelegate OnDeath;
-
 	virtual void BeginPlay() override;
+
+	// Called by engine when actor damage is dealt
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
 
 	// Sets default values for this character's properties
 	ATank(const class FObjectInitializer& ObjectInitializer);
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	USoundCue* SoundTakeHit;
+
+	FTankDelegate OnDeath;
+
+	float LastMakeNoiseTime;
+	float LastNoiseLoudness;
+
 
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "PlayerCondition", Replicated)
