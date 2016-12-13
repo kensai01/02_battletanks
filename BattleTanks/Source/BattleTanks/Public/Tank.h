@@ -3,7 +3,9 @@
 #pragma once
 
 #include "GameFramework/Pawn.h"
+#include "Types.h"
 #include "Tank.generated.h"
+
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
 
@@ -11,6 +13,8 @@ UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
+	/* Tracks noise data used by the pawn sensing component */
+	UPawnNoiseEmitterComponent* NoiseEmitterComp;
 
 public:
 	// Called by engine when actor damage is dealt
@@ -20,12 +24,19 @@ public:
 	UFUNCTION(BluePrintPure, Category = "Health")
 	float GetHealthPercent() const;
 
+	UFUNCTION(BlueprintCallable, Category = "PlayerCondition")
+	bool IsAlive() const;
+
 	FTankDelegate OnDeath;
 
 	virtual void BeginPlay() override;
 
-	// Sets default values for this pawn's properties
-	ATank();
+	// Sets default values for this character's properties
+	ATank(const class FObjectInitializer& ObjectInitializer);
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "PlayerCondition", Replicated)
+	float Health;
 
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
