@@ -19,7 +19,14 @@ public:
 
 	void LaunchProjectile(float Speed);
 
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	USoundCue* SoundOnImpact;
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	USoundCue* ProjectileMovementSound;
+
 private:
+	UAudioComponent* ProjectileMovementSoundAudio = nullptr;
+
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")

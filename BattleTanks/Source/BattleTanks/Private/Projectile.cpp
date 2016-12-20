@@ -41,6 +41,16 @@ void AProjectile::LaunchProjectile(float Speed)
 {
 	ProjectileMovement->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
 	ProjectileMovement->Activate();
+
+	// Missle mesh came in imported the wrong way around, this flips it so it points the danger pointy the right way
+	CollisionMesh->AddLocalRotation(FRotator(180, 0, 0));
+
+	// Move the projectile trail (LaunchBlast) back 5 cm to the back of the projectile so it doesn't appear in the middle of the missle
+	LaunchBlast->SetRelativeLocation(FVector(5, 0, 0));
+
+	// Play smoke trail sound
+	ProjectileMovementSoundAudio = UGameplayStatics::SpawnSoundAttached(ProjectileMovementSound, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
+	ProjectileMovementSoundAudio->Activate();
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
@@ -62,6 +72,12 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 
 	FTimerHandle Timer;
 	GetWorld()->GetTimerManager().SetTimer(Timer, this, &AProjectile::OnTimerExpire, DestroyDelay, false);
+
+	// Play impact sound
+	UGameplayStatics::SpawnSoundAttached(SoundOnImpact, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
+
+	// Stop smoke trail sound
+	ProjectileMovementSoundAudio->Deactivate();
 }
 
 void AProjectile::OnTimerExpire()

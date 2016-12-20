@@ -13,52 +13,59 @@ UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
-	/* Tracks noise data used by the pawn sensing component */
-	UPawnNoiseEmitterComponent* NoiseEmitterComp;
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "AI")
-	float GetLastNoiseLoudness();
-
-	UFUNCTION(BlueprintCallable, Category = "AI")
-	float GetLastMakeNoiseTime();
-
-	/* MakeNoise hook to trigger AI noise emitting (Loudness between 0.0-1.0)  */
-	UFUNCTION(BlueprintCallable, Category = "AI")
-	void MakePawnNoise(float Loudness);
-
-	// Returns current health as a pct of starting health, between 0 and 1
-	UFUNCTION(BluePrintPure, Category = "Health")
-	float GetHealthPercent() const;
-
-	UFUNCTION(BlueprintCallable, Category = "PlayerCondition")
-	bool IsAlive() const;
-
+	/// CONSTRUCTOR AND OVERRIDDEN FUNCTIONS
 	virtual void BeginPlay() override;
-
 	// Called by engine when actor damage is dealt
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const & DamageEvent, class AController * EventInstigator, AActor * DamageCauser) override;
-
 	// Sets default values for this character's properties
 	ATank(const class FObjectInitializer& ObjectInitializer);
 
+
+	/// SOUND AND NOISE HANDLING
+	/* MakeNoise hook to trigger AI noise emitting (Loudness between 0.0-1.0)  */
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	void MakePawnNoise(float Loudness);
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	float GetLastNoiseLoudness();
+	UFUNCTION(BlueprintCallable, Category = "AI")
+	float GetLastMakeNoiseTime();
+
+	/* MakeSoundTankFiring is blueprint callable in order to be able to attach
+	the sound mechanism to the firing input mechanism which was set up in blueprint 
+	along with the rest of input controlls.*/
+	UFUNCTION(BlueprintCallable, Category = "Sound")
+	void  MakeSoundTankFiring();
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* SoundTakeHit;
-
-	FTankDelegate OnDeath;
-
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	USoundCue* SoundTankFiring;
 	float LastMakeNoiseTime;
 	float LastNoiseLoudness;
 
 
+	/// HEALTH AND DAMAGE HANDLING
+	// Returns current health as a pct of starting health, between 0 and 1
+	UFUNCTION(BluePrintPure, Category = "Health")
+	float GetHealthPercent() const;
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	bool IsAlive() const;
+
+	FTankDelegate OnDeath;
+
 protected:
-	UPROPERTY(EditDefaultsOnly, Category = "PlayerCondition", Replicated)
-	float Health;
+	// TODO Is this needed?
+	//UPROPERTY(EditDefaultsOnly, Category = "PlayerCondition")
+	//float Health;
 
 private:
-	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	/// MUST STAY PRIVATE
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	int32 StartingHealth = 100;
-
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth;
+
+	/* Tracks noise data used by the pawn sensing component */
+	UPawnNoiseEmitterComponent* NoiseEmitterComp;
 };

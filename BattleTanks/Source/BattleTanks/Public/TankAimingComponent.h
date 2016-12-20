@@ -3,15 +3,8 @@
 #pragma once
 
 #include "Components/ActorComponent.h"
+#include "Types.h" // TODO Can this be a forward declratation?
 #include "TankAimingComponent.generated.h"
-
-// Enum for aiming state
-
-UENUM()
-enum class EFiringStatus : uint8
-{
-	Reloading, Aiming, Locked, OutOfAmmo
-};
 
 //forward declaration
 class UTankBarrel; 
@@ -72,6 +65,4 @@ private:
 
 	UTankTurret* Turret = nullptr;
 	UTankBarrel* Barrel = nullptr;
-
-
 };

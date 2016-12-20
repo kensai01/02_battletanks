@@ -17,42 +17,45 @@ class BATTLETANKS_API ASentryAIController : public AAIController
 	GENERATED_BODY()
 		ASentryAIController(const class FObjectInitializer& ObjectInitializer);
 
-	/* Called whenever the controller possesses a character bot */
-	virtual void Possess(class APawn* InPawn) override;
+		/* Called whenever the controller possesses a character bot */
+		virtual void Possess(class APawn* InPawn) override;
 
-	virtual void UnPossess() override;
+		virtual void UnPossess() override;
 
-	UBehaviorTreeComponent* BehaviorComp;
+		UBehaviorTreeComponent* BehaviorComp;
 
-	UBlackboardComponent* BlackboardComp;
+		UBlackboardComponent* BlackboardComp;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	FName TargetEnemyKeyName;
+		UPROPERTY(EditDefaultsOnly, Category = "AI")
+		FName TargetEnemyKeyName;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	FName PatrolLocationKeyName;
+		UPROPERTY(EditDefaultsOnly, Category = "AI")
+		FName PatrolLocationKeyName;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	FName CurrentWaypointKeyName;
+		UPROPERTY(EditDefaultsOnly, Category = "AI")
+		FName CurrentWaypointKeyName;
 
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	FName BotTypeKeyName;
+		UPROPERTY(EditDefaultsOnly, Category = "AI")
+		FName BotTypeKeyName;
+
+		UFUNCTION()
+		void OnPossessedTankDeath();
 
 	public:
 
-	ABotWaypoint* GetWaypoint();
+		ABotWaypoint* GetWaypoint();
 
-	ATank* GetTargetEnemy();
+		ATank* GetTargetEnemy();
 
-	void SetWaypoint(ABotWaypoint* NewWaypoint);
+		void SetWaypoint(ABotWaypoint* NewWaypoint);
 
-	void SetTargetEnemy(APawn* NewTarget);
+		void SetTargetEnemy(APawn* NewTarget);
 
-	void SetBlackboardBotType(EBotBehaviorType NewType);
+		void SetBlackboardBotType(EBotBehaviorType NewType);
 
-	/** Returns BehaviorComp subobject **/
-	FORCEINLINE UBehaviorTreeComponent* GetBehaviorComp()const { return BehaviorComp; }
+		/** Returns BehaviorComp subobject **/
+		FORCEINLINE UBehaviorTreeComponent* GetBehaviorComp()const { return BehaviorComp; }
 
-	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
+		FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
 	
 };

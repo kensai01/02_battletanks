@@ -4,6 +4,7 @@
 #include "../Public/TankAIController.h"
 #include "../Public/TankAimingComponent.h"
 #include "../Public/Tank.h" // So we can implement OnDeath
+#include "../Public/Types.h"
 
 void ATankAIController::SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus)
 {

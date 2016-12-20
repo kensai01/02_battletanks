@@ -14,21 +14,25 @@ class BATTLETANKS_API ATankSentry : public ATank
 {
 	GENERATED_BODY()
 
+	///CURRENTLY UNUSED
+	/* Last time we attacked something */
+	//float LastRangeAttackTime;
+
+
+private:
+	/// SENSES
 	/* Last time the player was spotted */
 	float LastSeenTime;
 
 	/* Last time the player was heard */
 	float LastHeardTime;
 
-	/* Last time we attacked something */
-	float LastRangeAttackTime;
+	/* Resets after sense time-out to avoid unnecessary clearing of target each tick */
+	bool bSensedTarget;
 
 	/* Time-out value to clear the sensed position of the player. Should be higher than Sense interval in the PawnSense component not never miss sense ticks. */
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	float SenseTimeOut;
-
-	/* Resets after sense time-out to avoid unnecessary clearing of target each tick */
-	bool bSensedTarget;
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UPawnSensingComponent* PawnSensingComp;
@@ -37,50 +41,18 @@ class BATTLETANKS_API ATankSentry : public ATank
 
 	virtual void Tick(float DeltaSeconds) override;
 
+	void TakeAimAndFireOnSensedTarget();
+
 protected:
 	// How close the AI can get
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float AcceptanceRadius = 8000;
 
-	//virtual bool IsSprinting() const override;
-
-	/* Triggered by pawn sensing component when a pawn is spotted */
-	/* When using functions as delegates they need to be marked with UFUNCTION(). We assign this function to FSeePawnDelegate */
 	UFUNCTION()
 	void OnSeePlayer(APawn* Pawn);
 
 	UFUNCTION()
 	void OnHearNoise(APawn* PawnInstigator, const FVector& Location, float Volume);
-
-	// TODO can this be used for range attacks?
-	UPROPERTY(VisibleAnywhere, Category = "Attacking")
-	UCapsuleComponent* MeleeCollisionComp;
-
-	/// TODO Implement this when I want melee characters
-	///* A pawn is in melee range */
-	//
-	//UFUNCTION()
-	//void OnMeleeCompBeginOverlap(class UPrimitiveComponent* OverlappedComponent, class AActor* OtherActor, class UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
-
-	//void OnRetriggerMeleeStrike();
-
-	///* Deal damage to the Actor that was hit by the punch animation */
-	UFUNCTION(BlueprintCallable, Category = "Attacking")
-	void PerformRangedStrike(AActor* HitActor);
-
-	//UFUNCTION(Reliable, NetMulticast)
-	//	void SimulateMeleeStrike();
-
-	//void SimulateMeleeStrike_Implementation();
-
-	UPROPERTY(EditDefaultsOnly, Category = "Attacking")
-	TSubclassOf<UDamageType> ProjectileDamageType;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Attacking")
-	float RangedDamage;
-
-	//UPROPERTY(EditDefaultsOnly, Category = "Attacking")
-	//	UAnimMontage* MeleeAnimMontage;
 
 	/// TODO Implement along with sound
 	///* Update the vocal loop of the zombie (idle, wandering, hunting) */
@@ -105,14 +77,7 @@ protected:
 
 	//UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	//	USoundCue* SoundAttackMelee;
-	//
 	
-	/* Timer handle to manage continous melee attacks while in range of a player */
-	FTimerHandle TimerHandle_MeleeAttack;
-
-	/* Minimum time between melee attacks */
-	float MeleeStrikeCooldown;
-
 	/// TODO Implement along with sound
 	///* Plays the idle, wandering or hunting sound */
 	//UPROPERTY(VisibleAnywhere, Category = "Sound")
@@ -121,11 +86,7 @@ protected:
 	//virtual void PlayHit(float DamageTaken, struct FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser, bool bKilled) override;
 
 public:
-
 	ATankSentry(const class FObjectInitializer& ObjectInitializer);
-
-	UPROPERTY(BlueprintReadWrite, Category = "Attacking")
-	bool bIsPunching;
 
 	/* The bot behavior we want this bot to execute, (passive/patrol) by specifying EditAnywhere we can edit this value per-instance when placed on the map. */
 	UPROPERTY(EditAnywhere, Category = "AI")

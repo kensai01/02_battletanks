@@ -46,7 +46,16 @@ void ASentryAIController::Possess(class APawn* InPawn)
 
 		BehaviorComp->StartTree(*TankSentry->BehaviorTree);
 	}
+	TankSentry->OnDeath.AddUniqueDynamic(this, &ASentryAIController::OnPossessedTankDeath);
 }
+
+// TODO fix bug where tank keeps firing after being destroyed
+void ASentryAIController::OnPossessedTankDeath()
+{
+	if (!(GetPawn())) { return; }
+	GetPawn()->DetachFromControllerPendingDestroy();
+}
+
 
 
 void ASentryAIController::UnPossess()

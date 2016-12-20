@@ -5,6 +5,7 @@
 #include "../Public/TankTurret.h"
 #include "../Public/TankAimingComponent.h"
 #include "../Public/Projectile.h"
+#include "../Public/Types.h"
 
 
 //initialize 

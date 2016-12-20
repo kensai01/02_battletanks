@@ -3,19 +3,13 @@
 #pragma once
 
 #include "AIController.h"
+#include "Types.h"
 #include "TankAIController.generated.h"
+
 
 /**
  * 
  */
-
- // Enum for AI perception state
-UENUM()
-enum class EPerceptionStatus : uint8
-{
-	Patrolling, Seeking
-};
-
 UCLASS()
 class BATTLETANKS_API ATankAIController : public AAIController
 {
