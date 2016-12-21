@@ -7,10 +7,12 @@
 #include "../Public/TankAimingComponent.h"
 #include "Tank.h"
 #include "BotWaypoint.h"
+
 //#include "SPlayerState.h"
 
 /* AI Include */
 #include "Perception/PawnSensingComponent.h"
+#include "Perception/AIPerceptionComponent.h"
 
 // Sets default values
 ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
@@ -25,7 +27,7 @@ ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
 	PawnSensingComp->SightRadius = 2000;
 	PawnSensingComp->HearingThreshold = 600;
 	PawnSensingComp->LOSHearingThreshold = 1200;
-	
+
 	/* By default we will not let the AI patrol, we can override this value per-instance. */
 	BotType = EBotBehaviorType::Passive;
 
@@ -35,7 +37,6 @@ ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
 
 	/* Note: Visual Setup is done in the AI/ZombieCharacter Blueprint file */
 }
-
 
 void ATankSentry::BeginPlay()
 {
