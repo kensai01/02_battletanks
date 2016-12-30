@@ -13,6 +13,8 @@
 /* AI Include */
 #include "Perception/PawnSensingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AIPerceptionTypes.h"
 
 // Sets default values
 ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
@@ -21,12 +23,29 @@ ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	/* Our sensing component to detect players by visibility and noise checks. */
-	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
-	PawnSensingComp->SetPeripheralVisionAngle(60.0f);
-	PawnSensingComp->SightRadius = 2000;
-	PawnSensingComp->HearingThreshold = 600;
-	PawnSensingComp->LOSHearingThreshold = 1200;
+	///* Our sensing component to detect players by visibility and noise checks. */
+	//PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
+	//PawnSensingComp->SetPeripheralVisionAngle(60.0f);
+	//PawnSensingComp->SightRadius = 2000;
+	//PawnSensingComp->HearingThreshold = 600;
+	//PawnSensingComp->LOSHearingThreshold = 1200;
+
+	/// EXPERIMENTAL AIPERCEPTION COMPONENT IMPLEMENTATION
+	/* Setup of the perception component */
+	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
+	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
+	PerceptionComponent->ConfigureSense(*SightConfig);
+	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
+	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ATankSentry::OnTargetPerceptionUpdated);
+
+	/* Sight Configuration */
+	SightConfig->SightRadius = 1000.0f;
+	SightConfig->LoseSightRadius = (1200.0f);
+	SightConfig->PeripheralVisionAngleDegrees = 140.0f;
+	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
+	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
+	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
+	PerceptionComponent->ConfigureSense(*SightConfig);
 
 	/* By default we will not let the AI patrol, we can override this value per-instance. */
 	BotType = EBotBehaviorType::Passive;
@@ -43,13 +62,47 @@ void ATankSentry::BeginPlay()
 	Super::BeginPlay();
 
 	/* This is the earliest moment we can bind our delegates(events) to the component */
-	/* Explanation: The OnSeePawn and OnHearNoise methods were manually created and this is how we 
+	/* Explanation: The OnSeePawn and OnHearNoise methods were manually created and this is how we
 	add them to the sensing component of the sentry. This way OnSeePawn and OnHearNoise are events in blueprint
 	that can be used to create various functionality directly via blueprint.*/
-	if (PawnSensingComp)
+	//if (PawnSensingComp)
+	//{
+	//	PawnSensingComp->OnSeePawn.AddDynamic(this, &ATankSentry::OnSeePlayer);
+	//	PawnSensingComp->OnHearNoise.AddDynamic(this, &ATankSentry::OnHearNoise);
+	//}
+
+	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SightConfig->GetSenseImplementation(), this);
+}
+
+void ATankSentry::OnTargetPerceptionUpdated(AActor * Source, FAIStimulus Stimulus)
+{
+	if (Stimulus.Type == SightConfig->GetSenseID()) 
 	{
-		PawnSensingComp->OnSeePawn.AddDynamic(this, &ATankSentry::OnSeePlayer);
-		PawnSensingComp->OnHearNoise.AddDynamic(this, &ATankSentry::OnHearNoise);
+		if (!IsAlive())
+		{
+			return;
+		}
+
+		if (!bSensedTarget)
+		{
+			// TODO Start playing the search and destroy sound
+			//BroadcastUpdateAudioLoop(true);
+		}
+
+		/* Keep track of the time the player was last sensed in order to clear the target */
+		LastSeenTime = GetWorld()->GetTimeSeconds();
+		bSensedTarget = true;
+
+		/*If the AIController is present (sentry tank not dead) and the player is alive
+		set the object that was sensed as the target enemy for the AI Controller.*/
+		ASentryAIController* AIController = Cast<ASentryAIController>(GetController());
+		ATank* SensedPawn = Cast<ATank>(Source);
+		if (AIController && SensedPawn->IsAlive())
+		{
+			AIController->SetTargetEnemy(SensedPawn);
+			//TODO Implement to take attack out of Tick function somehow...
+			//PerformRangedStrike(SensedPawn);
+		}
 	}
 }
 

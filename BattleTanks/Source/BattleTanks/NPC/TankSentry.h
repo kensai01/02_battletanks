@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Player/Tank.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "TankSentry.generated.h"
 
 /**
@@ -36,6 +37,16 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "AI")
 	class UPawnSensingComponent* PawnSensingComp;
+
+
+	///EXPERIMENTAL NEW AIPERCEPTION SYSTEM
+	UPROPERTY(VisibleAnywhere, Category = "AI")
+	UAIPerceptionComponent* PerceptionComponent;
+
+	class UAISenseConfig_Sight* SightConfig;
+
+	UFUNCTION()
+	void OnTargetPerceptionUpdated(AActor* Source, FAIStimulus Stimulus);
 
 	virtual void BeginPlay() override;
 
