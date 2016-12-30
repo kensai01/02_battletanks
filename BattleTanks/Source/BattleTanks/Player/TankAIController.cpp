@@ -1,10 +1,10 @@
 // Copyright Mirza Besic 2016
 
 #include "BattleTanks.h"
-#include "../Public/TankAIController.h"
-#include "../Public/TankAimingComponent.h"
-#include "../Public/Tank.h" // So we can implement OnDeath
-#include "../Public/Types.h"
+#include "TankAIController.h"
+#include "TankAimingComponent.h"
+#include "Tank.h" // So we can implement OnDeath
+#include "../Types.h"
 
 void ATankAIController::SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus)
 {

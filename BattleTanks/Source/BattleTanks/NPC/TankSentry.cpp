@@ -2,11 +2,11 @@
 
 #include "BattleTanks.h"
 #include "TankSentry.h"
-#include "TankAIController.h" //TODO Remove association
+#include "Player/TankAIController.h" //TODO Remove association
 #include "SentryAIController.h"
-#include "../Public/TankAimingComponent.h"
-#include "Tank.h"
-#include "BotWaypoint.h"
+#include "Player/TankAimingComponent.h"
+#include "Player/Tank.h"
+#include "AI/BotWaypoint.h"
 
 //#include "SPlayerState.h"
 

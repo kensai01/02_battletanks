@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTanks.h"
-#include "../Public/Tank.h"
-#include "../Public/TankAimingComponent.h" //to access the firing state
+#include "Tank.h"
+#include "TankAimingComponent.h" //to access the firing state
 
 // Sets default values
 ATank::ATank(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)

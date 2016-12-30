@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Tank.h"
+#include "Player/Tank.h"
 #include "TankSentry.generated.h"
 
 /**

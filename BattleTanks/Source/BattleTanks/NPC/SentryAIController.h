@@ -3,9 +3,9 @@
 #pragma once
 
 #include "AIController.h"
-#include "Public/Tank.h"
+#include "Player/Tank.h"
 #include "TankSentry.h"
-#include "Public/BotWaypoint.h"
+#include "AI/BotWaypoint.h"
 #include "SentryAIController.generated.h"
 
 /**

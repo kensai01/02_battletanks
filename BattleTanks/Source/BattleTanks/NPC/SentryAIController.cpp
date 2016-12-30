@@ -1,9 +1,9 @@
 // Copyright MB
 
 #include "BattleTanks.h"
-#include "Public/SentryAIController.h"
-#include "Public/TankSentry.h"
-#include "Public/Tank.h"
+#include "SentryAIController.h"
+#include "TankSentry.h"
+#include "Player/Tank.h"
 
 /* AI Specific includes */
 #include "BehaviorTree/BehaviorTree.h"

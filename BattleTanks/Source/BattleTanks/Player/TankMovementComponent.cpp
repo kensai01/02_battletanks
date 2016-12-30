@@ -1,8 +1,8 @@
 // Copyright Mirza Besic 2016
 
 #include "BattleTanks.h"
-#include "../Public/TankTrack.h"
-#include "../Public/TankMovementComponent.h"
+#include "TankTrack.h"
+#include "TankMovementComponent.h"
 
 /** path following: request new velocity */
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)

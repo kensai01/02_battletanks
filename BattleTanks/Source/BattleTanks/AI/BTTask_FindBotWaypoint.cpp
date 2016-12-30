@@ -2,8 +2,8 @@
 
 #include "BattleTanks.h"
 #include "BTTask_FindBotWaypoint.h"
-#include "Public/BotWaypoint.h"
-#include "Public/SentryAIController.h"
+#include "AI/BotWaypoint.h"
+#include "NPC/SentryAIController.h"
 
 
 /* AI Module includes */

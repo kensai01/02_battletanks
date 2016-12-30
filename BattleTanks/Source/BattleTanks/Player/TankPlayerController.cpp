@@ -2,8 +2,8 @@
 
 #include "BattleTanks.h"
 #include "TankPlayerController.h"
-#include "Public/TankAimingComponent.h"
-#include "Public/Tank.h"
+#include "TankAimingComponent.h"
+#include "Tank.h"
 
 void ATankPlayerController::SetPawn(APawn * InPawn)
 {

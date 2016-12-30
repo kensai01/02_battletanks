@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTanks.h"
-#include "../Public/TankBarrel.h"
-#include "../Public/TankTurret.h"
-#include "../Public/TankAimingComponent.h"
-#include "../Public/Projectile.h"
-#include "../Public/Types.h"
+#include "TankBarrel.h"
+#include "TankTurret.h"
+#include "TankAimingComponent.h"
+#include "Weapons/Projectile.h"
+#include "Types.h"
 
 
 //initialize 

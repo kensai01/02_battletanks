@@ -1,7 +1,7 @@
 // Copyright MB
 
 #include "../BattleTanks.h"
-#include "Public/ChooseNextWaypoint.h"
+#include "ChooseNextWaypoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "PatrolRoute.h"
 #include "AIController.h"
