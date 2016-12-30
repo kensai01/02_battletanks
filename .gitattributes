@@ -1,2 +1,2 @@
-Content/Static/** filter=lfs diff=lfs merge=lfs -text
+BattleTanks/Content/Static/** filter=lfs diff=lfs merge=lfs -text
 
