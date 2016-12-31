@@ -22,9 +22,20 @@ class BATTLETANKS_API ASentryAIController : public AAIController
 
 		virtual void UnPossess() override;
 
+		virtual void Tick(float DeltaTime) override;
+
 		UBehaviorTreeComponent* BehaviorComp;
 
 		UBlackboardComponent* BlackboardComp;
+
+		///EXPERIMENTAL NEW AIPERCEPTION SYSTEM
+		//UPROPERTY(VisibleAnywhere, Category = "AI")
+		//UAIPerceptionComponent* PerceptionComponent;
+
+		class UAISenseConfig_Sight* SightConfig;
+		class UAISenseConfig_Hearing* HearingConfig;
+
+		FAIStimulus CurrentStimulus;
 
 		UPROPERTY(EditDefaultsOnly, Category = "AI")
 		FName TargetEnemyKeyName;
@@ -40,6 +51,9 @@ class BATTLETANKS_API ASentryAIController : public AAIController
 
 		UFUNCTION()
 		void OnPossessedTankDeath();
+
+		UFUNCTION()
+		void OnTargetPerceptionUpdated(AActor* Source, FAIStimulus Stimulus);
 
 	public:
 

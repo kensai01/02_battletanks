@@ -19,40 +19,13 @@ class BATTLETANKS_API ATankSentry : public ATank
 	/* Last time we attacked something */
 	//float LastRangeAttackTime;
 
-
 private:
-	/// SENSES
-	/* Last time the player was spotted */
-	float LastSeenTime;
-
-	/* Last time the player was heard */
-	float LastHeardTime;
-
-	/* Resets after sense time-out to avoid unnecessary clearing of target each tick */
-	bool bSensedTarget;
-
-	/* Time-out value to clear the sensed position of the player. Should be higher than Sense interval in the PawnSense component not never miss sense ticks. */
-	UPROPERTY(EditDefaultsOnly, Category = "AI")
-	float SenseTimeOut;
-
-	UPROPERTY(VisibleAnywhere, Category = "AI")
-	class UPawnSensingComponent* PawnSensingComp;
-
-
-	///EXPERIMENTAL NEW AIPERCEPTION SYSTEM
-	UPROPERTY(VisibleAnywhere, Category = "AI")
-	UAIPerceptionComponent* PerceptionComponent;
-
-	class UAISenseConfig_Sight* SightConfig;
-
-	UFUNCTION()
-	void OnTargetPerceptionUpdated(AActor* Source, FAIStimulus Stimulus);
+	//UPROPERTY(VisibleAnywhere, Category = "AI")
+	//class UPawnSensingComponent* PawnSensingComp;
 
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
-
-	void TakeAimAndFireOnSensedTarget();
 
 protected:
 	// How close the AI can get
@@ -98,6 +71,26 @@ protected:
 
 public:
 	ATankSentry(const class FObjectInitializer& ObjectInitializer);
+	
+	/// SENSES
+	/* Resets after sense time-out to avoid unnecessary clearing of target each tick */
+	bool bSensedTarget;
+
+	/* Last time the player was spotted */
+	float LastSeenTime;
+
+	/* Last time the player was heard */
+	float LastHeardTime;
+
+	/* Current game time in seconds */
+	float CurrentTime;
+
+	UFUNCTION()
+	void TakeAimAndFireOnSensedTarget();
+
+	/* Time-out value to clear the sensed position of the player. Should be higher than Sense interval in the PawnSense component not never miss sense ticks. */
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	float SenseTimeOut;
 
 	/* The bot behavior we want this bot to execute, (passive/patrol) by specifying EditAnywhere we can edit this value per-instance when placed on the map. */
 	UPROPERTY(EditAnywhere, Category = "AI")

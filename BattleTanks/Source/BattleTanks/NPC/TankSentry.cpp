@@ -13,7 +13,9 @@
 /* AI Include */
 #include "Perception/PawnSensingComponent.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "Perception/AISense_Hearing.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
 #include "Perception/AIPerceptionTypes.h"
 
 // Sets default values
@@ -30,22 +32,6 @@ ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
 	//PawnSensingComp->HearingThreshold = 600;
 	//PawnSensingComp->LOSHearingThreshold = 1200;
 
-	/// EXPERIMENTAL AIPERCEPTION COMPONENT IMPLEMENTATION
-	/* Setup of the perception component */
-	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception Component"));
-	SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight Config"));
-	PerceptionComponent->ConfigureSense(*SightConfig);
-	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
-	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &ATankSentry::OnTargetPerceptionUpdated);
-
-	/* Sight Configuration */
-	SightConfig->SightRadius = 1000.0f;
-	SightConfig->LoseSightRadius = (1200.0f);
-	SightConfig->PeripheralVisionAngleDegrees = 140.0f;
-	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
-	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
-	PerceptionComponent->ConfigureSense(*SightConfig);
 
 	/* By default we will not let the AI patrol, we can override this value per-instance. */
 	BotType = EBotBehaviorType::Passive;
@@ -70,42 +56,7 @@ void ATankSentry::BeginPlay()
 	//	PawnSensingComp->OnSeePawn.AddDynamic(this, &ATankSentry::OnSeePlayer);
 	//	PawnSensingComp->OnHearNoise.AddDynamic(this, &ATankSentry::OnHearNoise);
 	//}
-
-	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SightConfig->GetSenseImplementation(), this);
 }
-
-void ATankSentry::OnTargetPerceptionUpdated(AActor * Source, FAIStimulus Stimulus)
-{
-	if (Stimulus.Type == SightConfig->GetSenseID()) 
-	{
-		if (!IsAlive())
-		{
-			return;
-		}
-
-		if (!bSensedTarget)
-		{
-			// TODO Start playing the search and destroy sound
-			//BroadcastUpdateAudioLoop(true);
-		}
-
-		/* Keep track of the time the player was last sensed in order to clear the target */
-		LastSeenTime = GetWorld()->GetTimeSeconds();
-		bSensedTarget = true;
-
-		/*If the AIController is present (sentry tank not dead) and the player is alive
-		set the object that was sensed as the target enemy for the AI Controller.*/
-		ASentryAIController* AIController = Cast<ASentryAIController>(GetController());
-		ATank* SensedPawn = Cast<ATank>(Source);
-		if (AIController && SensedPawn->IsAlive())
-		{
-			AIController->SetTargetEnemy(SensedPawn);
-			//TODO Implement to take attack out of Tick function somehow...
-			//PerformRangedStrike(SensedPawn);
-		}
-	}
-}
-
 
 void ATankSentry::Tick(float DeltaSeconds)
 {
@@ -121,10 +72,11 @@ void ATankSentry::Tick(float DeltaSeconds)
 
 	/* Check if the last time we sensed a player is beyond the
 	time out value to prevent bot from endlessly following a player.*/
-	auto CurrentTime = GetWorld()->TimeSeconds;
-	if (bSensedTarget && (CurrentTime - LastSeenTime) > SenseTimeOut
-		&& (CurrentTime - LastHeardTime) > SenseTimeOut)
+	CurrentTime = GetWorld()->TimeSeconds;
+	if (bSensedTarget && (CurrentTime - LastSeenTime) > SenseTimeOut)
+		//&& (CurrentTime - LastHeardTime) > SenseTimeOut)
 	{
+		
 		if (AIController)
 		{
 			/* Reset */
@@ -158,7 +110,6 @@ void ATankSentry::TakeAimAndFireOnSensedTarget()
 		AimingComponent->Fire(); // TODO limit firing rate
 	}
 }
-
 
 void ATankSentry::OnSeePlayer(APawn* Pawn)
 {
