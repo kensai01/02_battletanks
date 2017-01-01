@@ -28,7 +28,7 @@ ASentryAIController::ASentryAIController(const class FObjectInitializer& ObjectI
 	BehaviorComp = ObjectInitializer.CreateDefaultSubobject<UBehaviorTreeComponent>(this, TEXT("BehaviorComp"));
 	BlackboardComp = ObjectInitializer.CreateDefaultSubobject<UBlackboardComponent>(this, TEXT("BlackboardComp"));
 
-	/* Match with the AI/ZombieBlackboard */
+	/* Match with the AI/SentryBlackboard */
 	PatrolLocationKeyName = "PatrolLocation";
 	CurrentWaypointKeyName = "CurrentWaypoint";
 	BotTypeKeyName = "BotType";
@@ -78,39 +78,21 @@ ASentryAIController::ASentryAIController(const class FObjectInitializer& ObjectI
 
 void ASentryAIController::Tick(float DeltaTime)
 {
-
-	//ASentryAIController* AIController = Cast<ASentryAIController>(GetController());
-	/* Ensure that the AIController is present to avoid having dead
-	sentry tanks firing on the player when they get in sense radius */
+	/* Ensure that the current stimulus is active before allowing
+	the Tank Sentry to fire */
 	ATankSentry* TankSentry = Cast<ATankSentry>(GetPawn());
 	if (CurrentStimulus.IsActive())
 	{
+		/* Call the fire function on the controlled pawn.
+		Currently it's the TankSentry*/
 		TankSentry->TakeAimAndFireOnSensedTarget();
 	}
 
-	/* Check if the last time we sensed a player is beyond the
-	time out value to prevent bot from endlessly following a player.*/
-	//CurrentTime = GetWorld()->TimeSeconds;
-	//if (bSensedTarget && (CurrentTime - LastSeenTime) > SenseTimeOut)
-		//&& (CurrentTime - LastHeardTime) > SenseTimeOut)
-	//{
-
-		//if (AIController)
-		//{
-			/* Reset */
-			//bSensedTarget = false;
-			//AIController->SetTargetEnemy(nullptr);
-
-			/* Stop playing the search and destroy sound */
-			// TODO Implement search and destroy sound/music
-			//BroadcastUpdateAudioLoop(false);
-		//}
-	//}
-
-	//auto CurrentTime = GetWorld()->TimeSeconds;
-	//auto LastSeenTime = CurrentTime - CurrentStimulus.GetAge();
+	/* Check to see if the stimulus is expired by comparing the current age to the max age
+	set in the constructor */
 	if (CurrentStimulus.GetAge() > SightConfig->GetMaxAge())
 	{
+		/*Reset*/
 		SetTargetEnemy(nullptr);
 	}
 
@@ -121,52 +103,40 @@ void ASentryAIController::Possess(class APawn* InPawn)
 {
 	Super::Possess(InPawn);
 
+	/* Get the controlled pawn */
 	ATankSentry* TankSentry = Cast<ATankSentry>(InPawn);
+
+	/* Protect pawn pointer */
 	if (TankSentry)
 	{
+		/* Ensure that the behavior tree asset exists*/
 		if (TankSentry->BehaviorTree->BlackboardAsset)
 		{
+			/* Initialize the blackboard component that is on the controlled pawn, basically 
+			telling the pawn to run it's behaviorTree with the assigned blackboard asset. */
 			BlackboardComp->InitializeBlackboard(*TankSentry->BehaviorTree->BlackboardAsset);
 
 			/* Make sure the Blackboard has the type of bot we possessed */
 			SetBlackboardBotType(TankSentry->BotType);
 		}
 
+		/* Now that the blackboard component has been initialized to the TankSentry's blackboard asset, 
+		the behavior component begins TankSentry's behavior tree and associated logic. */
 		BehaviorComp->StartTree(*TankSentry->BehaviorTree);
 	}
 
 	// Bind the death method
 	TankSentry->OnDeath.AddUniqueDynamic(this, &ASentryAIController::OnPossessedTankDeath);
 
-	// Set up the AI Controller to bind the stimulus source to the controlled pawn
+	/* Setup the AI Controller to bind the stimulus source to the controlled pawn, 
+	this way we know from which pawns to listen to for perception updates.*/
 	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SightConfig->GetSenseImplementation(), GetControlledPawn());
 	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, HearingConfig->GetSenseImplementation(), GetControlledPawn());
 }
 
-//	FAIStimulus& SetExpirationAge(float InExpirationAge) { ExpirationAge = InExpirationAge; return *this; }
-//	FAIStimulus& SetStimulusAge(float StimulusAge) { Age = StimulusAge; return *this; }
-//	FAIStimulus& SetWantsNotifyOnlyOnValueChange(bool InEnable) { bWantsToNotifyOnlyOnValueChange = InEnable; return *this; }
-//	
-//	FORCEINLINE float GetAge() const { return Strength > 0 ? Age : NeverHappenedAge; }
-//	/** @return false when this stimulus is no longer valid, when it is Expired */
-//FORCEINLINE bool AgeStimulus(float ConstPerceptionAgingRate)
-//{
-//	Age += ConstPerceptionAgingRate;
-//	return Age < ExpirationAge;
-// }
-// FORCEINLINE bool WasSuccessfullySensed() const { return bSuccessfullySensed; }
-// FORCEINLINE bool IsExpired() const { return bExpired; }
-// FORCEINLINE void MarkNoLongerSensed() { bSuccessfullySensed = false; }
-// FORCEINLINE void MarkExpired() { bExpired = true; MarkNoLongerSensed(); }
-// FORCEINLINE bool IsActive() const { return WasSuccessfullySensed() == true && GetAge() < NeverHappenedAge; }
-// FORCEINLINE bool WantsToNotifyOnlyOnPerceptionChange() const { return bWantsToNotifyOnlyOnValueChange; }
-// FORCEINLINE bool IsValid() const { return Type != FAISenseID::InvalidID(); }
-
-
-
 /* Source is the actor that was sensed, the Stimulus is the type of sense such as hearing or sight. 
 Currently, both hearing and sight do the same thing; however...*/
-// TODO Override or create seperate functions for hearing and sight when I need different behavior based on either sense
+// TODO Override or create seperate functions for hearing and sight when I need different behavior based on either sense... .
 void ASentryAIController::OnTargetPerceptionUpdated(AActor * Source, FAIStimulus Stimulus)
 {
 	/* Update the stimulus variable in class with sensed stimulus in order to 
@@ -182,24 +152,23 @@ void ASentryAIController::OnTargetPerceptionUpdated(AActor * Source, FAIStimulus
 	// TODO Figure out setting MaxAge in constructor not here
 	Stimulus.SetExpirationAge(5.0f);
 
+	/* Currently both sight and hearing trigger the same behavior in the sentry.*/
+	/* TODO Create two seperate methods that do different things for both sight and hearing senses, 
+	I'm not sure what but it makes sense that they wouldn't do the same thing - it works for now though.*/
 	if (Stimulus.Type == SightConfig->GetSenseID() || Stimulus.Type == HearingConfig->GetSenseID())
-		//&& (CurrentTime - LastHeardTime) > SenseTimeOut)
 	{
+		/* Set the sensed pawn as the target enemy. */
 		ATank* SensedPawn = Cast<ATank>(Source);
 		if(SensedPawn){ SetTargetEnemy(SensedPawn); }	
 	}
 }
 
-
-
-
-// TODO fix bug where tank keeps firing after being destroyed
+/* Detaches AI controller when tank gets destroyed. */
 void ASentryAIController::OnPossessedTankDeath()
 {
 	if (!(GetPawn())) { return; }
 	GetPawn()->DetachFromControllerPendingDestroy();
 }
-
 
 
 void ASentryAIController::UnPossess()
@@ -248,7 +217,6 @@ ATank* ASentryAIController::GetTargetEnemy()
 
 	return nullptr;
 }
-
 
 void ASentryAIController::SetBlackboardBotType(EBotBehaviorType NewType)
 {
