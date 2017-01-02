@@ -43,6 +43,10 @@ private:
 
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
+	bool IsOutOfAmmo();
+
+	bool IsReloading();
+
 	void MoveBarrelTowards(FVector AimDirection);
 
 	bool IsBarrelMoving();

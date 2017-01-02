@@ -16,11 +16,13 @@ class BATTLETANKS_API ATankSentry : public ATank
 	GENERATED_BODY()
 
 protected:
+
 	// How close the AI can get
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float AcceptanceRadius = 8000;
 
 public:
+
 	ATankSentry(const class FObjectInitializer& ObjectInitializer);
 
 	/* Called from the AIController when the Tank is sensed */
@@ -38,14 +40,9 @@ public:
 	/* Assigned at the Character level (instead of Controller) so we may use different zombie behaviors while re-using one controller. */
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	class UBehaviorTree* BehaviorTree;
-
-
-
+	
 private:
-
-
-
-
+	
 	///UNUSED COMPONENTS / OLD COMPONENTS
 	/* Last time we attacked something */
 	//float LastRangeAttackTime;
@@ -62,31 +59,31 @@ private:
 	/// TODO Implement along with sound
 	///* Update the vocal loop of the zombie (idle, wandering, hunting) */
 	//UFUNCTION(Reliable, NetMulticast)
-	//	void BroadcastUpdateAudioLoop(bool bNewSensedTarget);
+	//void BroadcastUpdateAudioLoop(bool bNewSensedTarget);
 
 	//void BroadcastUpdateAudioLoop_Implementation(bool bNewSensedTarget);
 
 	//UAudioComponent* PlayCharacterSound(USoundCue* CueToPlay);
 
 	//UPROPERTY(EditDefaultsOnly, Category = "Sound")
-	//	USoundCue* SoundPlayerNoticed;
+	//USoundCue* SoundPlayerNoticed;
 
 	//UPROPERTY(EditDefaultsOnly, Category = "Sound")
-	//	USoundCue* SoundHunting;
+	//USoundCue* SoundHunting;
 
 	//UPROPERTY(EditDefaultsOnly, Category = "Sound")
-	//	USoundCue* SoundIdle;
+	//USoundCue* SoundIdle;
 
 	//UPROPERTY(EditDefaultsOnly, Category = "Sound")
-	//	USoundCue* SoundWandering;
+	//USoundCue* SoundWandering;
 
 	//UPROPERTY(EditDefaultsOnly, Category = "Sound")
-	//	USoundCue* SoundAttackMelee;
+	//USoundCue* SoundAttackMelee;
 
 	/// TODO Implement along with sound
 	///* Plays the idle, wandering or hunting sound */
 	//UPROPERTY(VisibleAnywhere, Category = "Sound")
-	//	UAudioComponent* AudioLoopComp;
+	//UAudioComponent* AudioLoopComp;
 
 	//virtual void PlayHit(float DamageTaken, struct FDamageEvent const& DamageEvent, APawn* PawnInstigator, AActor* DamageCauser, bool bKilled) override;
 

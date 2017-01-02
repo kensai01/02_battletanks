@@ -6,15 +6,15 @@
 #include "Tank.h" // So we can implement OnDeath
 #include "../Types.h"
 
-void ATankAIController::SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus)
-{
-	PerceptionStatus = NextPerceptionStatus;
-}
-
-EPerceptionStatus ATankAIController::GetPerceptionStatus() const
-{
-	return PerceptionStatus;
-}
+//void ATankAIController::SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus)
+//{
+//	PerceptionStatus = NextPerceptionStatus;
+//}
+//
+//EPerceptionStatus ATankAIController::GetPerceptionStatus() const
+//{
+//	return PerceptionStatus;
+//}
 
 void ATankAIController::BeginPlay()
 {
@@ -40,35 +40,35 @@ void ATankAIController::OnPossessedTankDeath()
 	GetPawn()->DetachFromControllerPendingDestroy();
 }
 
-// Called every frame
-void ATankAIController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-	auto ControlledTank = GetPawn();
-
-	if (!ensure(PlayerTank && ControlledTank)) { return; }
-	
-	if (PerceptionStatus == EPerceptionStatus::Seeking) {
-		
-		UE_LOG(LogTemp, Warning, TEXT("Found Enemy, SEARCH AND DESTROY!"))
-
-		// Move towards the player
-		MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
-
-		// Aim towards the player
-		auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
-		AimingComponent->AimAt(PlayerTank->GetActorLocation());
-
-		// If aim & locked Fire towrads the player
-		if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
-		{
-			AimingComponent->Fire(); // TODO limit firing rate
-		}
-	}
-
-}
+//// Called every frame
+//void ATankAIController::Tick(float DeltaTime)
+//{
+//	Super::Tick(DeltaTime);
+//
+//	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+//	auto ControlledTank = GetPawn();
+//
+//	if (!ensure(PlayerTank && ControlledTank)) { return; }
+//	
+//	if (PerceptionStatus == EPerceptionStatus::Seeking) {
+//		
+//		UE_LOG(LogTemp, Warning, TEXT("Found Enemy, SEARCH AND DESTROY!"))
+//
+//		// Move towards the player
+//		MoveToActor(PlayerTank, AcceptanceRadius);  // TODO Check radius is in cm
+//
+//		// Aim towards the player
+//		auto AimingComponent = ControlledTank->FindComponentByClass<UTankAimingComponent>();
+//		AimingComponent->AimAt(PlayerTank->GetActorLocation());
+//
+//		// If aim & locked Fire towrads the player
+//		if (AimingComponent->GetFiringState() == EFiringStatus::Locked)
+//		{
+//			AimingComponent->Fire(); // TODO limit firing rate
+//		}
+//	}
+//
+//}
 
 
 

@@ -8,7 +8,7 @@
 //forward declaration
 class UTankTrack;
 /**
- * Responsible for driving the tank tracks
+ * Responsible for driving the tank tracks.
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent

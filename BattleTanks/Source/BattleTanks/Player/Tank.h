@@ -32,6 +32,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AI")
 	float GetLastMakeNoiseTime();
 
+	float LastMakeNoiseTime;
+	float LastNoiseLoudness;
+
 	/* MakeSoundTankFiring is blueprint callable in order to be able to attach
 	the sound mechanism to the firing input mechanism which was set up in blueprint 
 	along with the rest of input controlls.*/
@@ -41,8 +44,7 @@ public:
 	USoundCue* SoundTakeHit;
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* SoundTankFiring;
-	float LastMakeNoiseTime;
-	float LastNoiseLoudness;
+
 
 
 	/// HEALTH AND DAMAGE HANDLING
@@ -53,11 +55,6 @@ public:
 	bool IsAlive() const;
 
 	FTankDelegate OnDeath;
-
-protected:
-	// TODO Is this needed?
-	//UPROPERTY(EditDefaultsOnly, Category = "PlayerCondition")
-	//float Health;
 
 private:
 	/// MUST STAY PRIVATE

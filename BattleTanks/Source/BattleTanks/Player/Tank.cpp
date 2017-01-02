@@ -2,22 +2,22 @@
 
 #include "BattleTanks.h"
 #include "Tank.h"
-#include "TankAimingComponent.h" //to access the firing state
+#include "TankAimingComponent.h"
 
-// Sets default values
+
 ATank::ATank(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
-	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame. 
 	PrimaryActorTick.bCanEverTick = true;
 
-	/* Noise emitter for both players and enemies. This keeps track of MakeNoise data and is used by the pawnsensing component in our SZombieCharacter class */
-	//NoiseEmitterComp = CreateDefaultSubobject<UPawnNoiseEmitterComponent>(TEXT("NoiseEmitterComp"));
 }
 
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	//Set the starting health
+
+	/* Sets the starting health
+	TODO Make Damage class to handle all damage*/
 	CurrentHealth = StartingHealth;
 }
 
@@ -28,21 +28,25 @@ float ATank::GetHealthPercent() const
 	return (float)CurrentHealth / (float)StartingHealth;
 }
 
+
+
 float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
-	// Convert a floating point radial damage to an integer 
+	/* Convert a floating point radial damage to an integer */
 	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
-	// Make sure the damage we apply is between 0 and current available health
+
+	/* Make sure the damage we apply is between 0 and current available health */
 	int32 DamageToApply = FMath::Clamp(DamagePoints, 0, CurrentHealth);
 
-	// Decrease health accordingly
+	/* Decrease health accordingly */
 	// TODO Implement a better damage handling system, why do I decrease the health here then return the damage amount below? Makes no sense
 	CurrentHealth -= DamageToApply;
 	
-	// Play damage sound
+	/* Play damage sound */
+	// TODO Create method that handels sound of various kinds rather than hard coding a spawn sound event 
 	UGameplayStatics::SpawnSoundAttached(SoundTakeHit, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
 
-	// Kill player if health reaches zero
+	/* Kill player if health reaches zero */
 	if (CurrentHealth <= 0)
 	{
 		OnDeath.Broadcast();
@@ -51,6 +55,7 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 	return DamageToApply;
 }
 
+/* Returns true if the player is alive*/
 // TODO Is this needed?
 bool ATank::IsAlive() const
 {
@@ -60,7 +65,7 @@ bool ATank::IsAlive() const
 /// NOISE HANDLING
 /* This function is blueprint callable and is used to make 
 Tank type actor create sounds that can be picked up by other 
-actors that have a PawnSensingComponent */
+actors that have a AI that listens for hearing type stimulus. */
 void ATank::MakePawnNoise(float Loudness)
 {
 	if (Role == ROLE_Authority)
@@ -72,11 +77,13 @@ void ATank::MakePawnNoise(float Loudness)
 	LastMakeNoiseTime = GetWorld()->GetTimeSeconds();
 }
 
+/* Get the last noise loudness. */
 float ATank::GetLastNoiseLoudness()
 {
 	return LastNoiseLoudness;
 }
 
+/* Get the last noise time. */
 float ATank::GetLastMakeNoiseTime()
 {
 	return LastMakeNoiseTime;
@@ -84,13 +91,15 @@ float ATank::GetLastMakeNoiseTime()
 
 void ATank::MakeSoundTankFiring()
 {
-	// make sure that we have a sound attached
+	/* Make sure that we have a sound attached. */
 	if (!SoundTankFiring) { return; }
-	// get the aiming component which has the firing status that we need to query
+
+	/* Get the aiming component which has the firing status that we need to query. */
 	auto AimingComponent = this->FindComponentByClass<UTankAimingComponent>();
-	// play sound only when tank isn't reloading
+
+	/* Play sound only when tank isn't reloading. */
 	if (AimingComponent->GetFiringState() != EFiringStatus::Reloading) {
-		// Play firing sound
+		/* Play firing sound */
 		UGameplayStatics::SpawnSoundAttached(SoundTankFiring, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
 	}
 }

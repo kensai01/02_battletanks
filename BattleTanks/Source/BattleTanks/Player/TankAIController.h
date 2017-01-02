@@ -16,11 +16,11 @@ class BATTLETANKS_API ATankAIController : public AAIController
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable, Category = "State")
-	EPerceptionStatus GetPerceptionStatus() const;
+	//UFUNCTION(BlueprintCallable, Category = "State")
+	//EPerceptionStatus GetPerceptionStatus() const;
 
-	UFUNCTION(BlueprintCallable, Category = "State")
-	void SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus);
+	//UFUNCTION(BlueprintCallable, Category = "State")
+	//void SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus);
 
 protected:
 	// How close the AI can get
@@ -34,7 +34,7 @@ private:
 	virtual void SetPawn(APawn* InPawn) override;
 
 	// Called every frame
-	virtual void Tick(float DeltaSeconds) override;
+	//virtual void Tick(float DeltaSeconds) override;
 
 	UFUNCTION()
 	void OnPossessedTankDeath();

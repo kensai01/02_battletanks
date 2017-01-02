@@ -68,8 +68,10 @@ class BATTLETANKS_API ASentryAIController : public AAIController
 		enemies besides just a tank. */
 		ATank* GetTargetEnemy();
 
+		/* Set the waypoint, ABotWaypoint is a Target Point */
 		void SetWaypoint(ABotWaypoint* NewWaypoint);
 
+		/* Returns a new target pawn*/
 		void SetTargetEnemy(APawn* NewTarget);
 
 		void SetBlackboardBotType(EBotBehaviorType NewType);
