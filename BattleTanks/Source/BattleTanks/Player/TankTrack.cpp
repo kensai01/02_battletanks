@@ -46,14 +46,21 @@ void UTankTrack::ApplySidewaysForce()
 
 void UTankTrack::SetThrottle(float Throttle)
 {
-	/* Clamp actual throttle value so player can't over-drive */
+	/* Clamp actual throttle value so player can't over-drive. */
 	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1, +1);
 }
 
 void UTankTrack::DriveTrack()
 {
+	/* Calculate the force that will be applied to the tank tracks. */
 	auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
+
+	/* The force location is the components location itself. */
 	auto ForceLocation = GetComponentLocation();
+
+	/* Get the tank root component in order to apply force. */
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
+
+	/* Apply force via root component at ForceLocation and ForceApplied. */
 	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
 }
