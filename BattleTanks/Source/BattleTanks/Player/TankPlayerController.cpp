@@ -25,6 +25,7 @@ void ATankPlayerController::OnPossessedTankDeath()
 {
 	/* Detach from the controller, effectively rendering the player dead. */
 	StartSpectatingOnly();
+	DisplayGameOverScreen();
 }
 
 void ATankPlayerController::BeginPlay()

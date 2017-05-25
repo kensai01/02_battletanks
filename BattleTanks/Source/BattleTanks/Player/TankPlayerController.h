@@ -22,9 +22,12 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 	void FoundAimingComponent(UTankAimingComponent* AimCompRef);
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+	void DisplayGameOverScreen();
 
 	UFUNCTION()
 	void OnPossessedTankDeath();
+
 
 public:
 	// Called when the game starts or when spawned
