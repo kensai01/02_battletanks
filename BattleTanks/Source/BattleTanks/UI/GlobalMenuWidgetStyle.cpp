@@ -3,25 +3,25 @@
 #include "BattleTanks.h"
 #include "GlobalMenuWidgetStyle.h"
 
-
-FGlobalMenuStyle::FGlobalMenuStyle()
+void FGlobalStyle::GetResources(TArray<const FSlateBrush*>& OutBrushes) const
 {
 }
 
-FGlobalMenuStyle::~FGlobalMenuStyle()
+const FName FGlobalStyle::TypeName = TEXT("FGlobalStyle");
+
+const FName FGlobalStyle::GetTypeName() const
 {
+	static const FName typeName = TEXT("FGlobalStyle");
+	return typeName;
 }
 
-const FName FGlobalMenuStyle::TypeName(TEXT("FGlobalMenuStyle"));
-
-const FGlobalMenuStyle& FGlobalMenuStyle::GetDefault()
+const FGlobalStyle& FGlobalStyle::GetDefault()
 {
-	static FGlobalMenuStyle Default;
+	static FGlobalStyle Default;
 	return Default;
 }
 
-void FGlobalMenuStyle::GetResources(TArray<const FSlateBrush*>& OutBrushes) const
+UGlobalMenuWidgetStyle::UGlobalMenuWidgetStyle(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
 {
-	// Add any brush resources here so that Slate can correctly atlas and reference them
 }
-
