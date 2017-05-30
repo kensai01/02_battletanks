@@ -28,4 +28,6 @@ public:
 
 	// Stores a weak reference to the HUD controlling this class.
 	TWeakObjectPtr<class AMainMenuHUD> MainMenuHUD;
+
+	const struct FGlobalStyle* MenuStyle;
 };

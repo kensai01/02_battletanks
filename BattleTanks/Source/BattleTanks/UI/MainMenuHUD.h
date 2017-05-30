@@ -8,7 +8,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class BATTLETANKS_API AMainMenuHUD : public AHUD
 {
 	GENERATED_BODY()
@@ -19,7 +19,7 @@ class BATTLETANKS_API AMainMenuHUD : public AHUD
 	TSharedPtr<class SMainMenuUI> MainMenuUI;
 
 public:
-	// Called by SMainMenu whenever the Play Game! button has been clicked.
+	// Called by SMainMenu whenever the Play Game! button has been clicked.s
 	UFUNCTION(BlueprintImplementableEvent, Category = "Menus|Main Menu")
 	void PlayGameClicked();
 

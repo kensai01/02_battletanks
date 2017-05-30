@@ -3,11 +3,15 @@
 #include "BattleTanks.h"
 #include "SMainMenuUI.h"
 #include "SlateOptMacros.h"
+#include "GlobalMenuWidgetStyle.h"
+#include "MenuStyles.h"
+#include "MainMenuHUD.h"
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SMainMenuUI::Construct(const FArguments& InArgs)
 {
 	MainMenuHUD = InArgs._MainMenuHUD;
+	MenuStyle = &FMenuStyles::Get().GetWidgetStyle<FGlobalStyle>("GlobalStyle");
 
 	ChildSlot
 		[
@@ -17,10 +21,11 @@ void SMainMenuUI::Construct(const FArguments& InArgs)
 			.VAlign(VAlign_Top)
 			[
 				SNew(STextBlock)
-				.ColorAndOpacity(FLinearColor::White)
-				.ShadowColorAndOpacity(FLinearColor::Black)
-				.ShadowOffset(FIntPoint(-1, 1))
-				.Font(FSlateFontInfo("Arial", 26))
+				//.ColorAndOpacity(FLinearColor::White)
+				//.ShadowColorAndOpacity(FLinearColor::Black)
+				//.ShadowOffset(FIntPoint(-1, 1))
+				//.Font(FSlateFontInfo("Arial", 26))
+				.TextStyle(&MenuStyle->MenuTitleStyle)
 				.Text(FText::FromString("Main Menu"))
 			]
 			+ SOverlay::Slot()
@@ -31,12 +36,16 @@ void SMainMenuUI::Construct(const FArguments& InArgs)
 					+ SVerticalBox::Slot()
 					[
 						SNew(SButton)
+						.ButtonStyle(&MenuStyle->MenuButtonStyle)
+						.TextStyle(&MenuStyle->MenuButtonTextStyle)
 						.Text(FText::FromString("Play Game!"))
 						.OnClicked(this, &SMainMenuUI::PlayGameClicked)
 					]
 					+ SVerticalBox::Slot()
 					[
 						SNew(SButton)
+						.ButtonStyle(&MenuStyle->MenuButtonStyle)
+						.TextStyle(&MenuStyle->MenuButtonTextStyle)
 						.Text(FText::FromString("Quit Game"))
 						.OnClicked(this, &SMainMenuUI::QuitGameClicked)
 					]
@@ -54,7 +63,7 @@ FReply SMainMenuUI::PlayGameClicked()
 	}
 
 	// actually the BlueprintImplementable function of the HUD is not called; uncomment if you want to handle the OnClick via Blueprint
-	//MainMenuHUD->PlayGameClicked();
+	MainMenuHUD->PlayGameClicked();
 	return FReply::Handled();
 }
 
@@ -66,6 +75,6 @@ FReply SMainMenuUI::QuitGameClicked()
 	}
 
 	// actually the BlueprintImplementable function of the HUD is not called; uncomment if you want to handle the OnClick via Blueprint
-	//MainMenuHUD->QuitGameClicked();
+	MainMenuHUD->QuitGameClicked();
 	return FReply::Handled();
 }

@@ -24,4 +24,4 @@ class FBattleTanksGameModule : public FDefaultGameModuleImpl
 
 };
 
-IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, BattleTanks, "BattleTanks" );
+IMPLEMENT_PRIMARY_GAME_MODULE(FBattleTanksGameModule, BattleTanks, "BattleTanks" );
