@@ -35,3 +35,14 @@ enum class EFiringStatus : uint8
 	Locked, 
 	OutOfAmmo
 };
+
+UENUM()
+namespace EGameDifficulty
+{
+	enum Type
+	{
+		Easy,
+		Medium,
+		Hard,
+	};
+}

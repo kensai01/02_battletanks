@@ -15,6 +15,6 @@ class BATTLETANKS_API AMainMenuGameMode : public AGameMode
 	
 	
 public:
-	AMainMenuGameMode();
+	//AMainMenuGameMode();
 	
 };

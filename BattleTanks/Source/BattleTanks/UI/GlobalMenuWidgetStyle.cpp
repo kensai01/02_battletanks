@@ -5,6 +5,12 @@
 
 void FGlobalStyle::GetResources(TArray<const FSlateBrush*>& OutBrushes) const
 {
+	OutBrushes.Add(&BackgroundBrush);
+	OutBrushes.Add(&TileBackgroundBrush);
+	OutBrushes.Add(&PopupBackgroundBrush);
+	OutBrushes.Add(&TopDecoration);
+	OutBrushes.Add(&LeftDecoration);
+	OutBrushes.Add(&RightDecoration);
 }
 
 const FName FGlobalStyle::TypeName = TEXT("FGlobalStyle");

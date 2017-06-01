@@ -6,7 +6,7 @@
 
 
 
-AMainMenuGameMode::AMainMenuGameMode()
-{
-	HUDClass = AMainMenuHUD::StaticClass();
-}
+//AMainMenuGameMode::AMainMenuGameMode()
+//{
+//	HUDClass = AMainMenuHUD::StaticClass();
+//}
