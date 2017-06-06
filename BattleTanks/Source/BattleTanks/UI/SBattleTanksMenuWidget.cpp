@@ -29,104 +29,104 @@ void SBattleTanksMenuWidget::Construct(const FArguments& InArgs)
 	MenuPaddingX = 80.0f;
 	MenuPaddingY = 30.0f;
 	const float BgPadding = 20.0f;
-	MenuOffsetX = 500.0f;
-	MenuOffsetY = 200.0f;
+	MenuOffsetX = 1000.0f;
+	MenuOffsetY = 500.0f;
 
 	ChildSlot
 		[
 			SNew(SDPIScaler)
 			.DPIScale(UIScale)
-		[
-			SNew(SOverlay)
-			+ SOverlay::Slot()
-		.HAlign(HAlign_Fill)
-		.VAlign(VAlign_Fill)
-		[
-			SNew(SImage)
-			.Image(&MenuStyle->BackgroundBrush)
-		]
-	+ SOverlay::Slot()
-		.HAlign(HAlign_Fill)
-		.VAlign(VAlign_Fill)
-		[
-			SNew(SVerticalBox)
-			+ SVerticalBox::Slot()
-		.FillHeight(1.0f)
-		.Padding(TAttribute<FMargin>(this, &SBattleTanksMenuWidget::GetMenuOffset))
-		[
-			SNew(SBorder)
-			.BorderImage(FCoreStyle::Get().GetBrush("NoBorder"))
-		.DesiredSizeScale(this, &SBattleTanksMenuWidget::GetBottomScale)
-		.VAlign(VAlign_Top)
-		.HAlign(HAlign_Left)
-		[
-			SNew(SOverlay)
-			+ SOverlay::Slot()
-		.HAlign(HAlign_Fill)
-		.VAlign(VAlign_Fill)
-		.Padding(FMargin(BgPadding))
-		[
-			SNew(SImage)
-			.Image(&MenuStyle->TileBackgroundBrush)
-		]
-	+ SOverlay::Slot()
-		.HAlign(HAlign_Fill)
-		.VAlign(VAlign_Fill)
-		[
-			SNew(SBorder)
-			.BorderImage(&MenuStyle->PopupBackgroundBrush)
-		.ColorAndOpacity(this, &SBattleTanksMenuWidget::GetBottomColor)
-		.VAlign(VAlign_Center)
-		.HAlign(HAlign_Center)
-		[
-			SNew(SOverlay)
-			+ SOverlay::Slot()
-		.HAlign(HAlign_Fill)
-		.VAlign(VAlign_Fill)
-		.Padding(FMargin(MenuPaddingX, MenuPaddingY))
-		[
-			SNew(SHorizontalBox)
-			+ SHorizontalBox::Slot()
-		.AutoWidth()
-		.Padding(TAttribute<FMargin>(this, &SBattleTanksMenuWidget::GetLeftMenuOffset))
-		[
-			SAssignNew(LeftBox, SVerticalBox)
-		]
-		]
-	+ SOverlay::Slot()
-		.HAlign(HAlign_Left)
-		.VAlign(VAlign_Center)
-		[
-			SNew(SImage)
-			.Image(&MenuStyle->LeftDecoration)
-		]
-	+ SOverlay::Slot()
-		.HAlign(HAlign_Right)
-		.VAlign(VAlign_Center)
-		[
-			SNew(SImage)
-			.Image(&MenuStyle->RightDecoration)
-		]
-		]
-		]
-		]
-		]
-		]
-	+ SOverlay::Slot()
-		.HAlign(HAlign_Fill)
-		.VAlign(VAlign_Fill)
-		[
-			SNew(SCanvas)
-			.Visibility(EVisibility::HitTestInvisible)
-		+ SCanvas::Slot()
-		.Position(TAttribute<FVector2D>(this, &SBattleTanksMenuWidget::GetTopDecorPosition))
-		.Size(TAttribute<FVector2D>(this, &SBattleTanksMenuWidget::GetTopDecorSize))
-		[
-			SAssignNew(TopDecorImage, SImage)
-			.Image(&MenuStyle->TopDecoration)
-		]
-		]
-		]
+			[
+				SNew(SOverlay)
+				+ SOverlay::Slot()
+				.HAlign(HAlign_Fill)
+				.VAlign(VAlign_Fill)
+				[
+					SNew(SImage)
+					.Image(&MenuStyle->BackgroundBrush)
+				]
+				+ SOverlay::Slot()
+				.HAlign(HAlign_Fill)
+				.VAlign(VAlign_Fill)
+				[
+					SNew(SVerticalBox)
+					+ SVerticalBox::Slot()
+					.FillHeight(1.0f)
+					.Padding(TAttribute<FMargin>(this, &SBattleTanksMenuWidget::GetMenuOffset))
+					[
+						SNew(SBorder)
+						.BorderImage(FCoreStyle::Get().GetBrush("NoBorder"))
+						.DesiredSizeScale(this, &SBattleTanksMenuWidget::GetBottomScale)
+						.VAlign(VAlign_Top)
+						.HAlign(HAlign_Left)
+						[
+							SNew(SOverlay)
+							+ SOverlay::Slot()
+							.HAlign(HAlign_Fill)
+							.VAlign(VAlign_Fill)
+							.Padding(FMargin(BgPadding))
+								[
+								SNew(SImage)
+								.Image(&MenuStyle->TileBackgroundBrush)
+								]
+								+ SOverlay::Slot()
+								.HAlign(HAlign_Fill)
+								.VAlign(VAlign_Fill)
+								[
+									SNew(SBorder)
+									.BorderImage(&MenuStyle->PopupBackgroundBrush)
+									.ColorAndOpacity(this, &SBattleTanksMenuWidget::GetBottomColor)
+									.VAlign(VAlign_Center)
+									.HAlign(HAlign_Center)
+									[
+										SNew(SOverlay)
+										+ SOverlay::Slot()
+										.HAlign(HAlign_Fill)
+										.VAlign(VAlign_Fill)
+										.Padding(FMargin(MenuPaddingX, MenuPaddingY))
+										[
+											SNew(SHorizontalBox)
+											+ SHorizontalBox::Slot()
+											.AutoWidth()
+											.Padding(TAttribute<FMargin>(this, &SBattleTanksMenuWidget::GetLeftMenuOffset))
+											[
+												SAssignNew(LeftBox, SVerticalBox)
+											]
+										]
+										+ SOverlay::Slot()
+										.HAlign(HAlign_Left)
+										.VAlign(VAlign_Center)
+										[
+											SNew(SImage)
+											.Image(&MenuStyle->LeftDecoration)
+										]
+										+ SOverlay::Slot()
+										.HAlign(HAlign_Right)
+										.VAlign(VAlign_Center)
+										[
+											SNew(SImage)
+											.Image(&MenuStyle->RightDecoration)
+										]
+									]
+								]
+						]
+					]
+				]
+				+ SOverlay::Slot()
+				.HAlign(HAlign_Fill)
+				.VAlign(VAlign_Fill)
+				[
+					SNew(SCanvas)
+					.Visibility(EVisibility::HitTestInvisible)
+					+ SCanvas::Slot()
+					.Position(TAttribute<FVector2D>(this, &SBattleTanksMenuWidget::GetTopDecorPosition))
+					.Size(TAttribute<FVector2D>(this, &SBattleTanksMenuWidget::GetTopDecorSize))
+					[
+						SAssignNew(TopDecorImage, SImage)
+						.Image(&MenuStyle->TopDecoration)
+					]
+				]
+			]
 		];
 	//Build left menu panel
 	bLeftMenuChanging = false;
@@ -256,11 +256,11 @@ void SBattleTanksMenuWidget::BuildLeftPanel(bool bInGoingBack)
 	{
 		//Add slots to the boxes...This is just to get around copy/pasting
 		TSharedPtr<SBattleTanksMenuItem> TmpButton;
-		//TmpButton = SAssignNew((*MainMenuHUD->CurrentMenu)[i].Widget, SBattleTanksMenuItem)
-		//	.OnClicked(this, &SBattleTanksMenuWidget::ButtonClicked, i)
-		//	.Text((*MainMenuHUD->CurrentMenu)[i].Text);
-		//(*MainMenuHUD->CurrentMenu)[i].Widget->SetImage(MainMenuHUD->MenuButtonTexture);
-		//(*MainMenuHUD->CurrentMenu)[i].Widget->DeferredShow();
+		TmpButton = SAssignNew((*MainMenuHUD->CurrentMenu)[i].Widget, SBattleTanksMenuItem)
+			.OnClicked(this, &SBattleTanksMenuWidget::ButtonClicked, i)
+			.Text((*MainMenuHUD->CurrentMenu)[i].Text);
+		(*MainMenuHUD->CurrentMenu)[i].Widget->SetImage(MainMenuHUD->MenuButtonTexture);
+		(*MainMenuHUD->CurrentMenu)[i].Widget->DeferredShow();
 		LeftBox->AddSlot()
 			.HAlign(HAlign_Left)
 			.AutoHeight()

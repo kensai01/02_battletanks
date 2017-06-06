@@ -7,7 +7,7 @@ void SBattleTanksMenuItem::Construct(const FArguments& InArgs)
 	SBattleTanksButtonWidget::Construct(
 		SBattleTanksButtonWidget::FArguments()
 		.ButtonText(InArgs._Text)
-		.TextFont(FMenuStyles::Get().GetFontStyle(TEXT("StrategyGame.MenuFont")))
+		.TextFont(FMenuStyles::Get().GetFontStyle(TEXT("BattleTanks.MenuFont")))
 		.TextVAlign(EVerticalAlignment::VAlign_Center)
 		.TextMargin(FMargin(0))
 		.Visibility(EVisibility::Visible)

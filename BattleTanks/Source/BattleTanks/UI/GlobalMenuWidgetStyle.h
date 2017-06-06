@@ -99,7 +99,78 @@ struct BATTLETANKS_API FGlobalStyle : public FSlateWidgetStyle
 	UPROPERTY(EditAnywhere, Category = Sound)
 	FSlateSound MenuExitSound;
 	FGlobalStyle& SetMenuExitSound(const FSlateSound& InMenuExitSound) { MenuExitSound = InMenuExitSound; return *this; }
+
+	/**
+	* The brush used to draw the resources area background
+	*/
+	UPROPERTY(EditAnywhere, Category = Appearance)
+	FSlateBrush ResourcesBackgroundBrush;
+	FGlobalStyle& SetResourcesBackgroundBrush(const FSlateBrush& InResourcesBackgroundBrush) { ResourcesBackgroundBrush = InResourcesBackgroundBrush; return *this; }
+
+	/**
+	* The brush used to draw the resources image
+	*/
+	UPROPERTY(EditAnywhere, Category = Appearance)
+	FSlateBrush ResourcesImage;
+	FGlobalStyle& SetResourcesImage(const FSlateBrush& InResourcesImage) { ResourcesImage = InResourcesImage; return *this; }
+
+	/**
+	* The sound that should play when starting the game
+	*/
+	UPROPERTY(EditAnywhere, Category = Sound)
+	FSlateSound StartGameSound;
+	FGlobalStyle& SetStartGameSound(const FSlateSound& InStartGameSound) { StartGameSound = InStartGameSound; return *this; }
+
+	/**
+	* The sound that should play when exiting the game
+	*/
+	UPROPERTY(EditAnywhere, Category = Sound)
+	FSlateSound ExitGameSound;
+	FGlobalStyle& SetExitGameSound(const FSlateSound& InExitGameSound) { ExitGameSound = InExitGameSound; return *this; }
+
+	/**
+	* The sound that should play when changing the selected menu item
+	*/
+	UPROPERTY(EditAnywhere, Category = Sound)
+	FSlateSound MenuItemChangeSound;
+	FGlobalStyle& SetMenuItemChangeSound(const FSlateSound& InMenuItemChangeSound) { MenuItemChangeSound = InMenuItemChangeSound; return *this; }
+
+	///**
+	//* The brush used to draw the frame around the mini-map
+	//*/
+	//UPROPERTY(EditAnywhere, Category = Appearance)
+	//FSlateBrush MinimapFrameBrush;
+	//FGlobalStyle& SetMinimapFrameBrush(const FSlateBrush& InMinimapFrameBrush) { MinimapFrameBrush = InMinimapFrameBrush; return *this; }
+
+	///**
+	//* The brush used to draw the victory image
+	//*/
+	//UPROPERTY(EditAnywhere, Category = Appearance)
+	//FSlateBrush VictoryImage;
+	//FGlobalStyle& SetVictoryImage(const FSlateBrush& InVictoryImage) { VictoryImage = InVictoryImage; return *this; }
+
+	///**
+	//* The brush used to draw the defeat image
+	//*/
+	//UPROPERTY(EditAnywhere, Category = Appearance)
+	//FSlateBrush DefeatImage;
+	//FGlobalStyle& SetDefeatImage(const FSlateBrush& InDefeatImage) { DefeatImage = InDefeatImage; return *this; }
+
+	///**
+	//* The color used to draw the victory text
+	//*/
+	//UPROPERTY(EditAnywhere, Category = Appearance)
+	//FSlateColor VictoryTextColor;
+	//FGlobalStyle& SetVictoryTextColor(const FSlateColor& InVictoryTextColor) { VictoryTextColor = InVictoryTextColor; return *this; }
+
+	///**
+	//* The color used to draw the defeat text
+	//*/
+	//UPROPERTY(EditAnywhere, Category = Appearance)
+	//FSlateColor DefeatTextColor;
+	//FGlobalStyle& SetDefeatTextColor(const FSlateColor& InDefeatTextColor) { DefeatTextColor = InDefeatTextColor; return *this; }
 };
+
 
 /**
  */

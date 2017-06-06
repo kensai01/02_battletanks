@@ -62,6 +62,10 @@ public:
 	*/
 	void RebuildWidgets(bool bHotReload = false);
 
+	/** Menu button texture. */
+	UPROPERTY()
+	UTexture2D* MenuButtonTexture;
+
 private:
 	/** Menu widget pointer. */
 	TSharedPtr<class SBattleTanksMenuWidget> MenuWidget;

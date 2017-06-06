@@ -8,6 +8,9 @@
 #include "SBattleTanksMenuWidget.h"
 #include "BattleTanksMenuItem.h"
 #include "GlobalMenuWidgetStyle.h"
+#include "../BattleTanksHelper.h"
+#include "MainMenuGameMode.h"
+#include "MenuStyles.h"
 #include "Engine.h"
 
 #define LOCTEXT_NAMESPACE "BattleTanks.HUD.Menu"
@@ -15,7 +18,7 @@
 AMainMenuHUD::AMainMenuHUD(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
-	//MenuButtonTexture = LoadObject<UTexture2D>(nullptr, TEXT("/Game/UI/MainMenu/MenuButton.MenuButton"), nullptr, LOAD_None, nullptr);
+	MenuButtonTexture = LoadObject<UTexture2D>(nullptr, TEXT("/Game/Static/UI/HUD/MenuButton.MenuButton"), nullptr, LOAD_None, nullptr);
 
 	AddMenuItem(MainMenu, LOCTEXT("Start", "START"));
 	AddMenuItem(MainMenu->Last().SubMenu, LOCTEXT("Easy", "EASY"))->OnConfirmMenuItem.BindUObject(this, &AMainMenuHUD::ExecuteSelectMapAction, (int32)EMenuAction::SetEasy);
@@ -53,8 +56,8 @@ void AMainMenuHUD::PostInitializeComponents()
 void AMainMenuHUD::ExecuteQuitAction()
 {
 	MenuWidget->HideMenu();
-	//const FStrategyHUDSoundsStyle& HUDSounds = FStrategyStyle::Get().GetWidgetStyle<FStrategyHUDSoundsStyle>("DefaultStrategyHUDSoundsStyle");
-	//MenuHelper::PlaySoundAndCall(PlayerOwner->GetWorld(), HUDSounds.ExitGameSound, this, &AMainMenuHUD::Quit);
+	const FGlobalStyle& HUDSounds = FMenuStyles::Get().GetWidgetStyle<FGlobalStyle>("GlobalStyle");
+	MenuHelper::PlaySoundAndCall(PlayerOwner->GetWorld(), HUDSounds.ExitGameSound, this, &AMainMenuHUD::Quit);
 	MenuWidget->LockControls(true);
 }
 
@@ -85,15 +88,16 @@ void AMainMenuHUD::ExecuteSelectMapAction(int32 index)
 
 	MenuWidget->HideMenu();
 	MenuWidget->LockControls(true);
-	//const FStrategyHUDSoundsStyle& HUDSounds = FStrategyStyle::Get().GetWidgetStyle<FStrategyHUDSoundsStyle>("DefaultStrategyHUDSoundsStyle");
-	//MenuHelper::PlaySoundAndCall(PlayerOwner->GetWorld(), HUDSounds.StartGameSound, this, &AMainMenuHUD::LaunchGame);
+	const FGlobalStyle& HUDSounds = FMenuStyles::Get().GetWidgetStyle<FGlobalStyle>("GlobalStyle");
+	MenuHelper::PlaySoundAndCall(PlayerOwner->GetWorld(), HUDSounds.StartGameSound, this, &AMainMenuHUD::LaunchGame);
 }
 
 void AMainMenuHUD::LaunchGame()
 {
-	//FString StartStr = FString::Printf(TEXT("/Game/Maps/TowerDefenseMap?%s=%d"), *AStrategyGameMode::DifficultyOptionName, (uint8)Difficulty);
+	//FString StartStr = FString::Printf(TEXT("/Game/Maps/TowerDefenseMap?%s=%d"), *AMainMenuGameMode::DifficultyOptionName, (uint8)Difficulty);
 	//GetWorld()->ServerTravel(StartStr);
-	ShowLoadingScreen();
+	//ShowLoadingScreen();
+	UGameplayStatics::OpenLevel(GetWorld(), "Battleground");
 }
 
 void AMainMenuHUD::RebuildWidgets(bool bHotReload)

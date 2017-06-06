@@ -132,7 +132,7 @@ FMargin	SBattleTanksButtonWidget::GetTextMargin() const
 
 FSlateFontInfo SBattleTanksButtonWidget::GetTextFont() const
 {
-	return TextFont.Get().IsSet() ? TextFont.Get().GetValue() : FMenuStyles::Get().GetFontStyle("StrategyGame.ButtonFont");
+	return TextFont.Get().IsSet() ? TextFont.Get().GetValue() : FMenuStyles::Get().GetFontStyle("BattleTanks.ButtonFont");
 }
 
 const FSlateBrush*  SBattleTanksButtonWidget::GetButtonImage() const

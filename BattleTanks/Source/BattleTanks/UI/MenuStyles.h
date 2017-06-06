@@ -16,6 +16,9 @@ public:
 	// Unregisters the Slate Style Set and then resets the MenuStyleInstance pointer.
 	static void Shutdown();
 
+	/** reloads textures used by slate renderer */
+	static void ReloadTextures();
+
 	// Retrieves a reference to the Slate Style pointed to by MenuStyleInstance.
 	static const class ISlateStyle& Get();
 

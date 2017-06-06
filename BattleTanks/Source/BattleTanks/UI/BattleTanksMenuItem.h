@@ -16,7 +16,7 @@ public:
 	TSharedPtr<TArray<FBattleTanksMenuItem>> SubMenu;
 
 	/** shared pointer to actual slate widget representing the menu item */
-	TSharedPtr<class FBattleTanksMenuItem> Widget;
+	TSharedPtr<class SBattleTanksMenuItem> Widget;
 
 	/** confirm menu item delegate */
 	DECLARE_DELEGATE(FOnConfirmMenuItem);
