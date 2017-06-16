@@ -28,8 +28,8 @@ class BATTLETANKS_API ASentryAIController : public AAIController
 
 		/* Behavior and Blackboard components defined here are assigned to
 		blackboard and behavior components of the pawn that is possessed. */
-		UBehaviorTreeComponent* BehaviorComp;
-		UBlackboardComponent* BlackboardComp;
+		class UBehaviorTreeComponent* BehaviorComp;
+		class UBlackboardComponent* BlackboardComp;
 
 		/* Used for configuration of sight and hearing in the constructor. */
 		class UAISenseConfig_Sight* SightConfig;
@@ -77,8 +77,8 @@ class BATTLETANKS_API ASentryAIController : public AAIController
 		void SetBlackboardBotType(EBotBehaviorType NewType);
 
 		/** Returns BehaviorComp subobject **/
-		FORCEINLINE UBehaviorTreeComponent* GetBehaviorComp()const { return BehaviorComp; }
+		FORCEINLINE class UBehaviorTreeComponent* GetBehaviorComp()const { return BehaviorComp; }
 
-		FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
+		FORCEINLINE class UBlackboardComponent* GetBlackboardComp() const { return BlackboardComp; }
 	
 };

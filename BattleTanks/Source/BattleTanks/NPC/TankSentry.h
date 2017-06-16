@@ -13,6 +13,7 @@
 UCLASS()
 class BATTLETANKS_API ATankSentry : public ATank
 {
+
 	GENERATED_BODY()
 
 protected:

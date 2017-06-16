@@ -51,22 +51,14 @@ Binaries/*
 # Builds
 Build/*
 
+# Plugins
+Plugins/*
+
 # Don't ignore icon files in Build
 !Build/**/*.ico
 
 # Various Free Asset Packs 
-Content/Freebie_01/*
-Content/GrassBlueprint/*
-Content/GTFreeMaterials/*
-Content/KiteDemo/*
-Content/NatureAssets/*
-Content/OtherFoliageAndTerrain/*
-Content/StarterContent/*
-Content/Static/Materials/*
-Content/WhiteHouse.uasset
-Content/WhiteHouse2.uasset
-Content/Showcase.umap
-Content/Static/Landscape/ExampleContent/*
+Content/Temporary/*
 
 # Various Raw Image files
 *.raw

@@ -4,6 +4,7 @@
 #include "TankPlayerController.h"
 #include "TankAimingComponent.h"
 #include "Tank.h"
+#include "TrackedVehicle.h"
 
 void ATankPlayerController::SetPawn(APawn * InPawn)
 {
@@ -11,7 +12,7 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 	if (InPawn)
 	{
 		/* Posess a tank character. */
-		auto PossessedTank = Cast<ATank>(InPawn);
+		auto PossessedTank = Cast<ATrackedVehicle>(InPawn);
 
 		/* Ensure that we have a posessed character to play with. */
 		if (!ensure(PossessedTank)) { return; }

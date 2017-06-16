@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.13",
+	"EngineAssociation": "4.15",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -12,7 +12,8 @@
 				"Engine",
 				"AIModule",
 				"Slate",
-				"SlateCore"
+				"SlateCore",
+				"MMT"
 			]
 		}
 	],
