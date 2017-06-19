@@ -66,7 +66,7 @@ class BATTLETANKS_API ASentryAIController : public AAIController
 		ATank but have it be passed in as a type so that 
 		it can be used for many different type of
 		enemies besides just a tank. */
-		ATank* GetTargetEnemy();
+		ATrackedVehicle* GetTargetEnemy();
 
 		/* Set the waypoint, ABotWaypoint is a Target Point */
 		void SetWaypoint(ABotWaypoint* NewWaypoint);

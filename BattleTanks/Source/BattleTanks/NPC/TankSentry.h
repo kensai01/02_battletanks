@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Player/Tank.h"
+#include "Player/TrackedVehicle.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "TankSentry.generated.h"
 
@@ -11,7 +11,7 @@
  */
 
 UCLASS()
-class BATTLETANKS_API ATankSentry : public ATank
+class BATTLETANKS_API ATankSentry : public ATrackedVehicle
 {
 
 	GENERATED_BODY()
@@ -24,7 +24,7 @@ protected:
 
 public:
 
-	ATankSentry(const class FObjectInitializer& ObjectInitializer);
+	//ATankSentry(const class FObjectInitializer& ObjectInitializer);
 
 	/* Called from the AIController when the Tank is sensed */
 	UFUNCTION()

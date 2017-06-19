@@ -9,17 +9,17 @@
 
 
 // Sets default values
-ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-{
-	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-
-	/* By default we will not let the AI patrol, we can override this value per-instance. */
-	BotType = EBotBehaviorType::Passive;
-
-	/* Note: Visual Setup is done in the AI/ZombieCharacter Blueprint file */
-}
+//ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
+//	: Super(ObjectInitializer)
+//{
+//	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+//	PrimaryActorTick.bCanEverTick = false;
+//
+//	/* By default we will not let the AI patrol, we can override this value per-instance. */
+//	BotType = EBotBehaviorType::Passive;
+//
+//	/* Note: Visual Setup is done in the AI/ZombieCharacter Blueprint file */
+//}
 
 void ATankSentry::TakeAimAndFireOnSensedTarget()
 {

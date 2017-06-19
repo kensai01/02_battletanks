@@ -158,7 +158,7 @@ void ASentryAIController::OnTargetPerceptionUpdated(AActor * Source, FAIStimulus
 	if (Stimulus.Type == SightConfig->GetSenseID() || Stimulus.Type == HearingConfig->GetSenseID())
 	{
 		/* Set the sensed pawn as the target enemy. */
-		ATank* SensedPawn = Cast<ATank>(Source);
+		ATrackedVehicle* SensedPawn = Cast<ATrackedVehicle>(Source);
 		if(SensedPawn){ SetTargetEnemy(SensedPawn); }	
 	}
 }
@@ -208,11 +208,11 @@ ABotWaypoint* ASentryAIController::GetWaypoint()
 }
 
 
-ATank* ASentryAIController::GetTargetEnemy()
+ATrackedVehicle* ASentryAIController::GetTargetEnemy()
 {
 	if (BlackboardComp)
 	{
-		return Cast<ATank>(BlackboardComp->GetValueAsObject(TargetEnemyKeyName));
+		return Cast<ATrackedVehicle>(BlackboardComp->GetValueAsObject(TargetEnemyKeyName));
 	}
 
 	return nullptr;

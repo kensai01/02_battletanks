@@ -4,6 +4,7 @@
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
 #include "Tank.h" // So we can implement OnDeath
+#include "TrackedVehicle.h"
 #include "../Types.h"
 
 //void ATankAIController::SetPerceptionStatus(EPerceptionStatus NextPerceptionStatus)
@@ -26,7 +27,7 @@ void ATankAIController::SetPawn(APawn * InPawn)
 	Super::SetPawn(InPawn);
 	if (InPawn)
 	{
-		auto PossessedTank = Cast<ATank>(InPawn);
+		auto PossessedTank = Cast<ATrackedVehicle>(InPawn);
 		if (!ensure(PossessedTank)) { return; }
 
 		//Subscribe our local method to the tank's death event
