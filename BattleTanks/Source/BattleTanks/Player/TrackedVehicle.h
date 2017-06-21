@@ -9,6 +9,7 @@
 #include "Types.h"
 #include "TrackedVehicle.generated.h"
 
+
 /**
  * 
  */
@@ -51,6 +52,10 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* SoundTankFiring;
 
+	UFUNCTION(BlueprintCallable, Category = "Targeting")
+	void LockAimTowardsTarget(FVector HitLocation, bool targEnemy);
+	UFUNCTION(BlueprintCallable, Category = "Targeting")
+	void UnlockAimTowardsTarget();
 
 
 	/// HEALTH AND DAMAGE HANDLING
@@ -68,6 +73,8 @@ private:
 	int32 StartingHealth = 100;
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth;
+	UPROPERTY(VisibleAnywhere, Category = "Targeting")
+	bool targetingEnemy = false;
 
 	/* Tracks noise data used by the pawn sensing component */
 	UPawnNoiseEmitterComponent* NoiseEmitterComp;

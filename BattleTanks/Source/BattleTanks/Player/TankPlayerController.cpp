@@ -22,6 +22,8 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 	}
 }
 
+
+
 void ATankPlayerController::OnPossessedTankDeath()
 {
 	/* Detach from the controller, effectively rendering the player dead. */
@@ -46,6 +48,9 @@ void ATankPlayerController::BeginPlay()
 	/* Blueprint callable event that is called in the PlayerController blueprint
 	in order to create the player user interface widget (crosshair, ammo count etc.). */
 	FoundAimingComponent(AimingComponent);
+
+	/*Set the initial state of targetting to off*/
+	targetingEnemy = false;
 
 	/// DEBUG LOG
 	//auto ControlledTank = GetPawn();
@@ -80,7 +85,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	/* Get world location of linetrace through crosshair, true if hits landscape. */
 	bool bGothitLocation = GetSightRayHitLocation(HitLocation);
 
-	if (bGothitLocation)
+	if (bGothitLocation && !targetingEnemy)
 	{
 		/* Tells controlled tank to aim at this point. */
 		AimingComponent->AimAt(HitLocation);

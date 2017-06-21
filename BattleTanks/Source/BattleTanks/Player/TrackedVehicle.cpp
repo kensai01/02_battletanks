@@ -3,8 +3,7 @@
 #include "BattleTanks.h"
 #include "TrackedVehicle.h"
 #include "TankAimingComponent.h"
-
-
+#include "TankPlayerController.h"
 
 
 //ATrackedVehicle::ATrackedVehicle(const class FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -103,6 +102,47 @@ void ATrackedVehicle::MakeSoundTankFiring()
 	if (AimingComponent->GetFiringState() != EFiringStatus::Reloading) {
 		/* Play firing sound */
 		UGameplayStatics::SpawnSoundAttached(SoundTankFiring, RootComponent, NAME_None, FVector::ZeroVector, EAttachLocation::SnapToTarget, true);
+	}
+}
+
+void ATrackedVehicle::UnlockAimTowardsTarget()
+{
+	/*Set Targeting Enemy Flags True*/
+	targetingEnemy = false;
+	//auto PlayerController = this->GetController();
+	ATankPlayerController* PlayerController = Cast<ATankPlayerController>(GetController());
+	PlayerController->targetingEnemy = false;
+}
+
+void ATrackedVehicle::LockAimTowardsTarget(FVector HitLocation, bool targEnemy)
+{
+
+	/*Set Targeting Enemy Flags True*/
+	targetingEnemy = targEnemy;
+	//auto PlayerController = this->GetController();
+	ATankPlayerController* PlayerController = Cast<ATankPlayerController>(GetController());
+	PlayerController->targetingEnemy = targEnemy;
+
+	/* Ensure that we are posessing a pawn. */
+	//if (!(GetPawn())) { return; }
+
+	/* Get the aiming component. */
+	auto AimingComponent = this->FindComponentByClass<UTankAimingComponent>();
+
+	/* Ensure that we have an aiming component. */
+	if (!ensure(AimingComponent)) { return; }
+
+	/* Out paramater. */
+	//FVector HitLocation;
+	//HitLocation = HitLoc;
+
+	/* Get world location of linetrace through crosshair, true if hits landscape. */
+	//bool bGothitLocation = GetSightRayHitLocation(HitLocation);
+
+	if (targetingEnemy)
+	{
+		/* Tells controlled tank to aim at this point. */
+		AimingComponent->AimAt(HitLocation);
 	}
 }
 

@@ -35,6 +35,9 @@ public:
 
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
+
+	UPROPERTY(VisibleAnywhere, Category = "Targeting")
+	bool targetingEnemy;
 	
 
 private:
@@ -61,4 +64,5 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	float LineTraceRange = 1000000;
+
 };
