@@ -30,6 +30,7 @@ public:
 	//ATrackedVehicle(const class FObjectInitializer& ObjectInitializer);
 
 
+
 	/// SOUND AND NOISE HANDLING
 	/* MakeNoise hook to trigger AI noise emitting (Loudness between 0.0-1.0)  */
 	UFUNCTION(BlueprintCallable, Category = "AI")
@@ -52,10 +53,30 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	USoundCue* SoundTankFiring;
 
+	/// TARGETING SYSTEM
 	UFUNCTION(BlueprintCallable, Category = "Targeting")
 	void LockAimTowardsTarget(FVector HitLocation, bool targEnemy);
 	UFUNCTION(BlueprintCallable, Category = "Targeting")
 	void UnlockAimTowardsTarget();
+	UFUNCTION(BlueprintCallable, Category = "Targeting")
+	void SeekAndSetNearestEnemy_new(ATrackedVehicle* EnemyTank);
+	UFUNCTION(BlueprintCallable, Category = "Targeting")
+	float DistanceFromEnemy(ATankSentry* enemy);
+	
+	UFUNCTION(Category = "Targeting")
+	bool Trace(UWorld* World,
+		AActor* ActorToIgnore,
+		const FVector& Start,
+		const FVector& End,
+		FHitResult& HitOut,
+		bool ReturnPhysMat);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	float ClosestTargetDistance = 0.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	ATankSentry* NearestTarget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Targeting")
+	bool targetingEnemy = false;
 
 
 	/// HEALTH AND DAMAGE HANDLING
@@ -73,8 +94,6 @@ private:
 	int32 StartingHealth = 100;
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	int32 CurrentHealth;
-	UPROPERTY(VisibleAnywhere, Category = "Targeting")
-	bool targetingEnemy = false;
 
 	/* Tracks noise data used by the pawn sensing component */
 	UPawnNoiseEmitterComponent* NoiseEmitterComp;

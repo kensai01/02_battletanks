@@ -4,11 +4,11 @@
 #include "TankSentry.h"
 #include "SentryAIController.h"
 #include "Player/TankAimingComponent.h"
-#include "Player/Tank.h"
+#include "Player/TrackedVehicle.h"
 #include "AI/BotWaypoint.h"
 
 
-// Sets default values
+//// Sets default values
 //ATankSentry::ATankSentry(const class FObjectInitializer& ObjectInitializer)
 //	: Super(ObjectInitializer)
 //{
@@ -40,6 +40,15 @@ void ATankSentry::TakeAimAndFireOnSensedTarget()
 	{
 		AimingComponent->Fire(); // TODO limit firing rate
 	}
+}
+
+float ATankSentry::DistanceFromPlayer()
+{
+	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+
+	float DistanceToPlayer = GetDistanceTo(PlayerTank);
+	
+	return DistanceToPlayer;
 }
 
 /*	Sets the bot type based on the two options:

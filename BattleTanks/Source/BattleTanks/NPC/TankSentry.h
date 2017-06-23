@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "Player/TrackedVehicle.h"
+#include "../Player/TrackedVehicle.h"
 #include "Perception/AIPerceptionTypes.h"
 #include "TankSentry.generated.h"
 
@@ -13,7 +13,6 @@
 UCLASS()
 class BATTLETANKS_API ATankSentry : public ATrackedVehicle
 {
-
 	GENERATED_BODY()
 
 protected:
@@ -29,6 +28,9 @@ public:
 	/* Called from the AIController when the Tank is sensed */
 	UFUNCTION()
 	void TakeAimAndFireOnSensedTarget();
+
+	UFUNCTION(BlueprintCallable, Category = "Targeting")
+	float DistanceFromPlayer();
 
 	/* Change default bot type during gameplay */
 	void SetBotType(EBotBehaviorType NewType);

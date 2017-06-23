@@ -130,8 +130,8 @@ void ASentryAIController::Possess(class APawn* InPawn)
 
 	/* Setup the AI Controller to bind the stimulus source to the controlled pawn, 
 	this way we know from which pawns to listen to for perception updates.*/
-	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SightConfig->GetSenseImplementation(), GetControlledPawn());
-	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, HearingConfig->GetSenseImplementation(), GetControlledPawn());
+	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, SightConfig->GetSenseImplementation(), GetPawn());
+	UAIPerceptionSystem::RegisterPerceptionStimuliSource(this, HearingConfig->GetSenseImplementation(), GetPawn());
 }
 
 /* Source is the actor that was sensed, the Stimulus is the type of sense such as hearing or sight. 

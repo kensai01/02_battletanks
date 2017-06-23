@@ -2,6 +2,7 @@
 
 #include "BattleTanks.h"
 #include "TrackedVehicle.h"
+#include "../NPC/TankSentry.h"
 #include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
@@ -20,6 +21,7 @@ void ATrackedVehicle::BeginPlay()
 	/* Sets the starting health
 	TODO Make Damage class to handle all damage*/
 	CurrentHealth = StartingHealth;
+	ClosestTargetDistance = 0.0f;
 }
 
 /* Called by the health bar widget to display the correct fill percent on the progress bar
@@ -55,6 +57,7 @@ float ATrackedVehicle::TakeDamage(float DamageAmount, FDamageEvent const & Damag
 
 	return DamageToApply;
 }
+
 
 /* Returns true if the player is alive*/
 // TODO Is this needed?
@@ -107,24 +110,100 @@ void ATrackedVehicle::MakeSoundTankFiring()
 
 void ATrackedVehicle::UnlockAimTowardsTarget()
 {
-	/*Set Targeting Enemy Flags True*/
-	targetingEnemy = false;
-	//auto PlayerController = this->GetController();
+	/*Set Targeting PlayerController Flags False*/
 	ATankPlayerController* PlayerController = Cast<ATankPlayerController>(GetController());
 	PlayerController->targetingEnemy = false;
 }
+
+void ATrackedVehicle::SeekAndSetNearestEnemy_new(ATrackedVehicle* EnemyTank)
+{
+	/* Ensure that a tracked vehicle exists.*/
+	if (!EnemyTank) { return; }
+	/* Ensure that the tracked vehicle is a TankSentry.*/
+	ATankSentry* enemy = Cast<ATankSentry>(EnemyTank);
+	if (!enemy) { return; }
+
+	/*Get the player location and the location of the enemy tank.*/
+	FVector playerLocation = GetActorLocation();
+	FVector enemyLocation = enemy->GetActorLocation();
+	
+	/* Initialize the hit data that will be returned from the linetrace.*/
+	FHitResult HitData(ForceInit);
+
+	/* Line trace to see what we hit. */
+	if (Trace(GetWorld(), this, playerLocation, enemyLocation, HitData, false) && HitData.GetActor())
+	{
+		/* Ensure that the actor hit is a Tank Sentry.*/
+		if (enemy == Cast<ATankSentry>(HitData.GetActor())) {
+			UE_LOG(LogTemp, Warning, TEXT("Found Enemy: %s"), *enemy->GetName())
+			/* Get the distance between player and enemy.*/
+			float distanceFromEnemy = HitData.Distance;
+			/* Check to see if enemy is the closest target.*/
+			if (distanceFromEnemy < ClosestTargetDistance)
+			{
+				/* If the enemy is the closest, set it as the target.*/
+				ClosestTargetDistance = distanceFromEnemy;
+				NearestTarget = enemy;
+			}
+		}
+	}
+}
+
+float ATrackedVehicle::DistanceFromEnemy(ATankSentry* enemy)
+{
+	return GetDistanceTo(enemy);
+}
+
+bool ATrackedVehicle::Trace(
+	UWorld* World,
+	AActor* ActorToIgnore,
+	const FVector& Start,
+	const FVector& End,
+	FHitResult& HitOut,
+	bool ReturnPhysMat = false
+) {
+	if (!World)
+	{
+		return false;
+	}
+
+	/* Initialize the objects that need to be querried/traced against, this is the collision channel.*/
+	FCollisionObjectQueryParams ObjectParams;
+	ObjectParams.AddObjectTypesToQuery(ECollisionChannel::ECC_Pawn);
+	ObjectParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldStatic);
+	ObjectParams.AddObjectTypesToQuery(ECollisionChannel::ECC_WorldDynamic);
+
+	/* Initialize Trace parameters including the actor to ignore.*/
+	FCollisionQueryParams TraceParams(FName(TEXT("Nearest Enemy Trace")), true, ActorToIgnore);
+	TraceParams.bTraceComplex = false;
+	TraceParams.bReturnPhysicalMaterial = ReturnPhysMat;
+
+	//Ignore Actors
+	TraceParams.AddIgnoredActor(ActorToIgnore);
+	//Re-initialize hit info
+	HitOut = FHitResult(ForceInit);
+
+	//Trace!
+	World->LineTraceSingleByObjectType(
+		HitOut,		//result
+		Start,	//start
+		End, //end
+		ObjectParams, //collision channel
+		TraceParams
+	);
+	//Hit any Actor?
+	return (HitOut.GetActor() != NULL);
+}
+
 
 void ATrackedVehicle::LockAimTowardsTarget(FVector HitLocation, bool targEnemy)
 {
 
 	/*Set Targeting Enemy Flags True*/
-	targetingEnemy = targEnemy;
+	//targetingEnemy = targEnemy;
 	//auto PlayerController = this->GetController();
 	ATankPlayerController* PlayerController = Cast<ATankPlayerController>(GetController());
 	PlayerController->targetingEnemy = targEnemy;
-
-	/* Ensure that we are posessing a pawn. */
-	//if (!(GetPawn())) { return; }
 
 	/* Get the aiming component. */
 	auto AimingComponent = this->FindComponentByClass<UTankAimingComponent>();
@@ -132,14 +211,7 @@ void ATrackedVehicle::LockAimTowardsTarget(FVector HitLocation, bool targEnemy)
 	/* Ensure that we have an aiming component. */
 	if (!ensure(AimingComponent)) { return; }
 
-	/* Out paramater. */
-	//FVector HitLocation;
-	//HitLocation = HitLoc;
-
-	/* Get world location of linetrace through crosshair, true if hits landscape. */
-	//bool bGothitLocation = GetSightRayHitLocation(HitLocation);
-
-	if (targetingEnemy)
+	if (targEnemy)
 	{
 		/* Tells controlled tank to aim at this point. */
 		AimingComponent->AimAt(HitLocation);
