@@ -77,3 +77,8 @@ Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+*.jar
+.git.bfg-report/2017-06-29/21-48-49/cache-stats.txt
+.git.bfg-report/2017-06-29/21-48-49/object-id-map.old-new.txt
+.git.bfg-report/2017-06-29/21-48-49/protected-dirt/c700e3dc-HEAD.csv
+.git.bfg-report/2017-06-29/21-48-49/deleted-files.txt
