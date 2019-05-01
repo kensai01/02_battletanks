@@ -5,21 +5,11 @@ using System.Collections.Generic;
 
 public class BattleTanksEditorTarget : TargetRules
 {
-	public BattleTanksEditorTarget(TargetInfo Target)
+	public BattleTanksEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
+
+        ExtraModuleNames.Add("BattleTanks");
 	}
 
-	//
-	// TargetRules interface.
-	//
-
-	public override void SetupBinaries(
-		TargetInfo Target,
-		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
-		ref List<string> OutExtraModuleNames
-		)
-	{
-		OutExtraModuleNames.AddRange( new string[] { "BattleTanks" } );
-	}
 }

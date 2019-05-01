@@ -24,6 +24,8 @@
 void ATankSentry::TakeAimAndFireOnSensedTarget()
 {
 	// Get the players tank first so we can get it's location
+	if (!ensure(GetWorld()->GetFirstPlayerController())) { return; }
+	if (!ensure(GetWorld()->GetFirstPlayerController()->GetPawn())) { return; }
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 
 	/* Protect player tank pointer */

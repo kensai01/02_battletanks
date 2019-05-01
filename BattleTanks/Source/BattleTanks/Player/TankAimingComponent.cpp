@@ -21,10 +21,8 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
+	//bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 void UTankAimingComponent::BeginPlay()
@@ -68,7 +66,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 
 	/* Compare the aim direction of our crosshair to the direction the barrel is pointing in 
 	and if it's equal within an error margin of 1 pct return true. */
-	return BarrelForwardVector.Equals(AimDirection, 0.01);
+	return BarrelForwardVector.Equals(AimDirection, 0.05);
 }
 
 void UTankAimingComponent::Fire()
@@ -104,9 +102,14 @@ EFiringStatus UTankAimingComponent::GetFiringState() const
 	return FiringStatus;
 }
 
-int32 UTankAimingComponent::GetRoundsLeft() const
+int32 UTankAimingComponent::GetRoundsLeftNum() const
 {
 	return RoundsLeft;
+}
+
+FText UTankAimingComponent::GetRoundsLeft() const
+{
+	return FText::AsNumber(RoundsLeft);
 }
 
 /* Called by the Tank Player Controller */

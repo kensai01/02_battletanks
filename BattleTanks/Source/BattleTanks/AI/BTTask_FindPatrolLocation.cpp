@@ -4,7 +4,7 @@
 #include "BTTask_FindPatrolLocation.h"
 #include "AI/BotWaypoint.h"
 #include "NPC/SentryAIController.h"
-
+#include "NavigationSystem.h"
 
 /* AI Module includes */
 #include "BehaviorTree/BehaviorTreeComponent.h"
@@ -29,11 +29,13 @@ EBTNodeResult::Type UBTTask_FindPatrolLocation::ExecuteTask(UBehaviorTreeCompone
 		const FVector SearchOrigin = MyWaypoint->GetActorLocation();
 		/* Finds random, point in navigable space restricted to Radius around Origin. Resulting location is not tested for reachability from the Origin
 		Utilizes the Waypoint */
-		const FVector Loc = UNavigationSystem::GetRandomPointInNavigableRadius(MyController, SearchOrigin, SearchRadius);
-		if (Loc != FVector::ZeroVector)
+		FNavLocation ResultLocation;
+		// UNavigationSystem* NavSystem = UNavigationSystem::GetNavigationSystem(MyController);
+		UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(this)->GetNavigationSystem(MyController);
+		if (NavSystem && NavSystem->GetRandomPointInNavigableRadius(SearchOrigin, SearchRadius, ResultLocation))
 		{
 			/* The selected key should be "PatrolLocation" in the BehaviorTree setup */
-			OwnerComp.GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(BlackboardKey.GetSelectedKeyID(), Loc);
+			OwnerComp.GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(BlackboardKey.GetSelectedKeyID(), ResultLocation.Location);
 			return EBTNodeResult::Succeeded;
 		}
 	}

@@ -28,6 +28,10 @@ AProjectile::AProjectile()
 	ImpactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ImpactBlast->bAutoActivate = false;
 
+	ImpactExplosion = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Explosion"));
+	ImpactExplosion->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ImpactExplosion->bAutoActivate = false;
+
 	/* Construct the Explosion Force component. */
 	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Force"));
 	ExplosionForce->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
@@ -66,6 +70,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	and pulse once the explosino force to move whatever was hit. */
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	ImpactExplosion->Activate();
 	ExplosionForce->FireImpulse();
 	
 	/* Set the root component to the Impact Blast so that we can delete the collision mesh. */

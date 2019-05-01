@@ -166,8 +166,15 @@ void ASentryAIController::OnTargetPerceptionUpdated(AActor * Source, FAIStimulus
 /* Detaches AI controller when tank gets destroyed. */
 void ASentryAIController::OnPossessedTankDeath()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Inside OnPossessedTankDeath"));
+	/* Mark any sensed targets no longer sensed */
+	CurrentStimulus.MarkNoLongerSensed();
+
 	if (!(GetPawn())) { return; }
 	GetPawn()->DetachFromControllerPendingDestroy();
+	// GetPawn()->Destroy();
+	this->UnPossess();
+	this->Destroy();
 }
 
 
